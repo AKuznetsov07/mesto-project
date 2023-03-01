@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\blocks",
+    "\\blocks\\elements\\__like-button",
+    "\\blocks\\footer\\__caption",
+    "\\blocks\\profile",
+    "\\blocks\\profile\\__add-button",
+    "\\blocks\\profile\\__avatar",
+    "\\blocks\\profile\\__edit-button",
+    "\\blocks\\profile\\__fio",
+    "\\blocks\\profile\\__profession"
+  ],
+  "SelectedNode": "\\blocks\\profile\\__avatar\\profile__avatar.css",
+  "PreviewInSolutionExplorer": false
+}

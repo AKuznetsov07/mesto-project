@@ -1,0 +1,34 @@
+.profile {
+    display: grid;
+    padding: 0;
+    margin: 0 0 51px 0;
+    row-gap: 16px;
+    grid-template-columns: repeat(3,minmax(min-content,max-content)) 1fr;
+    grid-template-rows: min-content min-content;
+    box-sizing: border-box;
+    grid-template-areas:
+        "avatar fio edit-button add-button"
+        "avatar profession . add-button"
+}
+@media screen and (max-width: 1279px) {
+    .profile {
+    }
+}
+
+@media screen and (max-width: 1023px) {
+    .profile {
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .profile {
+        row-gap: 0;
+        grid-template-columns: 1fr minmax( 189px,max-content) 1fr;
+        grid-template-rows: repeat(3,minmax(min-content,max-content)) 1fr;
+        grid-template-areas:
+            "avatar avatar avatar"
+            ". fio edit-button"
+            "profession profession profession"
+            "add-button add-button add-button"
+    }
+}

@@ -1,0 +1,10 @@
+.body {
+    background-color: #000000;
+    margin:45px 200px 60px;
+}
+
+@media screen and (max-width: 1023px) {
+    .body {
+        margin: 28px 19px 36px;
+    }
+}

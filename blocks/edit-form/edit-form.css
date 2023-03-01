@@ -1,0 +1,18 @@
+.edit-form {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 430px;
+    min-width: 282px;
+    box-sizing: border-box;
+    padding: 0 36px;
+    border-radius: 10px;
+    background: #FFFFFF;
+    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.15);
+}
+@media screen and (max-width: 767px) {
+    .edit-form {
+        margin:0 22px;
+    }
+}
