@@ -1,15 +1,15 @@
 .elements__like-button {
     padding: 0;
-    margin: 30px;
+    margin: 30px 20px;
     grid-area: like-button;
     width: 22px;
     height: 19px;
     background-repeat: no-repeat;
     background-position: center;
     background-color: transparent;
-    background-image: url(../../../images/unlike.png);
-    border:none;
+    background-image: url(../../../images/unlike.svg);
+    border: none;
 }
-    .elements__like-button:hover {
-        background-image: url(../../../images/like-hover.png);
-    }
+.elements__like-button:hover {
+    opacity: 0.5;
+}

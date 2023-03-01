@@ -3,6 +3,7 @@
     padding: 0;
     margin: 0 0 51px 0;
     row-gap: 16px;
+    align-self:stretch;
     grid-template-columns: repeat(3,minmax(min-content,max-content)) 1fr;
     grid-template-rows: min-content min-content;
     box-sizing: border-box;
@@ -10,13 +11,9 @@
         "avatar fio edit-button add-button"
         "avatar profession . add-button"
 }
-@media screen and (max-width: 1279px) {
-    .profile {
-    }
-}
-
 @media screen and (max-width: 1023px) {
     .profile {
+        margin: 0 19px 36px;
     }
 }
 

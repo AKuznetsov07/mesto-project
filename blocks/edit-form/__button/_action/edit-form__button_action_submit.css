@@ -1,0 +1,12 @@
+.edit-form__button_action_submit {
+    margin: 18px 0 37px;
+    min-height: 50px;
+}
+.edit-form__button_action_submit:hover {
+    opacity: 0.8;
+}
+@media screen and (max-width: 767px) {
+    .edit-form__button_action_submit {
+        margin: 15px 0 25px;
+    }
+}

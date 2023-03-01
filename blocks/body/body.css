@@ -1,10 +1,20 @@
 .body {
+    display: flex;
+    justify-content: center;
     background-color: #000000;
-    margin:45px 200px 60px;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+    padding: 45px 200px 60px;
+    min-width: 320px;
+    max-width: 1280px;
+    font-family: 'Inter', Arial, sans-serif;
+    overflow-x: visible;
+    box-sizing: border-box;
 }
 
 @media screen and (max-width: 1023px) {
     .body {
-        margin: 28px 19px 36px;
+        padding: 28px 0 36px;
     }
 }

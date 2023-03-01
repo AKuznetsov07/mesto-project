@@ -1,3 +1,8 @@
 .footer{
-
+    align-self:start;
+}
+@media screen and (max-width: 1023px) {
+    .footer {
+        margin: 0 19px 0;
+    }
 }

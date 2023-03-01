@@ -1,8 +1,15 @@
 .elements {
-    padding:0;
-    margin: 0 0 67px;
+    padding: 0;
+    margin: 0 0 66px;
     display: grid;
     grid-template-columns: repeat(auto-fill, 282px);
+    align-items: center;
     row-gap: 20px;
     column-gap: 17px;
+    max-width: 880px;
+}
+@media screen and (max-width: 1023px) {
+    .elements {
+        margin: 0 19px 48px;
+    }
 }

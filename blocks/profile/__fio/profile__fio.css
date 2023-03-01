@@ -1,15 +1,14 @@
 .profile__fio {
     margin: 0 18px 0 0;
     padding: 0;
-    max-height: 39px;
     grid-area: fio;
     align-self: end;
-    font-family: 'Inter';
     font-style: normal;
     font-weight: 500;
     font-size: 42px;
     line-height: 48px;
-
+    max-width: 294px;
+    
     color: #FFFFFF;
     text-align: end;
     text-overflow: ellipsis;
@@ -19,9 +18,9 @@
     .profile__fio {
         margin: 0;
         align-self: center;
-        margin: 0 0 14px;
         font-size: 27px;
         line-height: 33px;
         text-align: center;
+        max-width: 189px;
     }
 }
