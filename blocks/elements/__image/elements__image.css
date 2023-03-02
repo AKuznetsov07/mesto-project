@@ -1,7 +1,7 @@
 .elements__image {
     grid-area: image;
     object-fit: cover;
-    max-width: 100%;
-    aspect-ratio: 1 / 1;
+    width: 282px;
+    height: 282px;
     border-radius: 10px 10px 0 0;
 }
