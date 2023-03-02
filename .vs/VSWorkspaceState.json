@@ -2,15 +2,15 @@
   "ExpandedNodes": [
     "",
     "\\blocks",
-    "\\blocks\\elements",
+    "\\blocks\\edit-form",
+    "\\blocks\\elements\\__caption",
     "\\blocks\\elements\\__card",
     "\\blocks\\elements\\__image",
     "\\blocks\\elements\\__like-button",
-    "\\blocks\\elements\\__like-button\\_selected",
-    "\\fonts\\inter",
-    "\\fonts\\inter\\medium",
-    "\\images"
+    "\\blocks\\footer\\__caption",
+    "\\blocks\\popup",
+    "\\blocks\\popup\\__cancel-button"
   ],
-  "SelectedNode": "\\README.md",
+  "SelectedNode": "\\blocks\\edit-form\\edit-form.css",
   "PreviewInSolutionExplorer": false
 }

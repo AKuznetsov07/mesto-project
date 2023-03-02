@@ -8,7 +8,7 @@
 </head>
 <body class="body">
     <header class="header">
-        <img class="header__logo" src="./images/logo.svg" alt="Фото" />
+        <img class="header__logo" src="./images/logo.svg" alt="Лого сайта" />
     </header>
 
     <main class="main">
@@ -57,13 +57,13 @@
     <footer class="footer">
         <p class="footer__caption">© 2020 Mesto Russia</p>
     </footer>
-    <div class="dialog-layout <!--dialog-layout_opened-->">
-        <div class="popup">
-            <button type="button" class="popup__cancel-button interactive-item"></button>
-            <form class="edit-form">
+    <div class="dialog dialog_opened">
+        <div class="dialog__popup">
+            <button type="button" class="dialog__cancel-button interactive-item"></button>
+            <form class="edit-form" name="EditBio">
                 <h2 class="edit-form__heading">Редактировать профиль</h2>
-                <input type="text" class="edit-form__item" name="fio" placeholder="Фио" value="Жак-Ив Кусто" required>
-                <input type="text" class="edit-form__item" name="profession" placeholder="Профессия" value="Исследователь океана" required>
+                <input type="text" class="edit-form__item" name="Fio" placeholder="Фио" value="Жак-Ив Кусто" required>
+                <input type="text" class="edit-form__item" name="Profession" placeholder="Профессия" value="Исследователь океана" required>
                 <button type="submit" class="edit-form__button edit-form__button_action_submit interactive-item">Сохранить</button>
             </form>
         </div>
