@@ -21,52 +21,52 @@
         </section>
 
         <section class="elements">
-            <div class="elements__card">
-                <img class="elements__image" src="./images/123.jpg" alt="Сомнительный успех" />
-                <h2 class="elements__caption">Не за горами</h2>
-                <button type="button" class="elements__like-button <!--elements__like-button_selected--> interactive-item"></button>
-            </div>
-            <div class="elements__card">
-                <img class="elements__image" src="./images/karachaevsk.jpg" alt="Фото старого здания" />
-                <h2 class="elements__caption">Карачаевск</h2>
-                <button type="button" class="elements__like-button <!--elements__like-button_selected--> interactive-item"></button>
-            </div>
-            <div class="elements__card">
-                <img class="elements__image" src="./images/elbrus.jpg" alt="Фото Эльбруса" />
-                <h2 class="elements__caption">Гора Эльбрус</h2>
-                <button type="button" class="elements__like-button <!--elements__like-button_selected--> interactive-item"></button>
-            </div>
-            <div class="elements__card">
-                <img class="elements__image" src="./images/karachaevsk.jpg" alt="Фото старого здания" />
-                <h2 class="elements__caption">Карачаевск</h2>
-                <button type="button" class="elements__like-button <!--elements__like-button_selected--> interactive-item"></button>
-            </div>
-            <div class="elements__card">
-                <img class="elements__image" src="./images/elbrus.jpg" alt="Фото Эльбруса" />
-                <h2 class="elements__caption">Гора Эльбрус</h2>
-                <button type="button" class="elements__like-button <!--elements__like-button_selected--> interactive-item"></button>
-            </div>
-            <div class="elements__card">
-                <img class="elements__image" src="./images/dombay.jpg" alt="Фото гор" />
-                <h2 class="elements__caption">Домбай</h2>
-                <button type="button" class="elements__like-button <!--elements__like-button_selected--> interactive-item"></button>
-            </div>
         </section>
     </main>
 
     <footer class="footer">
         <p class="footer__caption">© 2020 Mesto Russia</p>
     </footer>
-    <div class="dialog <!--dialog_opened-->">
+    <div class="dialog dialog_closed">
         <div class="dialog__popup">
             <button type="button" class="dialog__cancel-button interactive-item"></button>
-            <form class="edit-form" name="EditBio">
-                <h2 class="edit-form__heading">Редактировать профиль</h2>
-                <input type="text" class="edit-form__item" name="Fio" placeholder="Фио" value="Жак-Ив Кусто" required>
-                <input type="text" class="edit-form__item" name="Profession" placeholder="Профессия" value="Исследователь океана" required>
-                <button type="submit" class="edit-form__button edit-form__button_action_submit interactive-item">Сохранить</button>
-            </form>
         </div>
     </div>
+
+
+
+    <template id="placeCardTemplate">
+        <div class="elements__card">
+            <button class="elements__remove-button interactive-item"></button>
+            <img class="elements__image" src="" alt="" />
+            <h2 class="elements__caption"></h2>
+            <button type="button" class="elements__like-button interactive-item"></button>
+        </div>
+    </template>
+
+    <template id="editProfileFormTemplate">
+        <form class="edit-form" name="EditBio">
+            <h2 class="edit-form__heading">Редактировать профиль</h2>
+            <input type="text" class="edit-form__item" name="Fio" placeholder="Фио" value="" required>
+            <input type="text" class="edit-form__item" name="Profession" placeholder="Профессия" value="" required>
+            <button type="submit" class="edit-form__button edit-form__button_action_submit interactive-item">Сохранить</button>
+        </form>
+    </template>
+    <template id="editCardFormTemplate">
+        <form class="edit-form" name="EditCard">
+            <h2 class="edit-form__heading">Новое место</h2>
+            <input type="text" class="edit-form__item" name="CardName" placeholder="Название" value="" required>
+            <input type="text" class="edit-form__item" name="ImgLink" placeholder="Ссылка на картинку" value="" required>
+            <button type="submit" class="edit-form__button edit-form__button_action_submit interactive-item">Создать</button>
+        </form>
+    </template>
+    <template id="cardViewFormTemplate">
+        <figure class="view-form">
+            <img class="view-form__image" src="" alt="" />
+            <figcaption class="view-form__caption"></figcaption>
+        </figure>
+    </template>
+
+    <script src="source/script.js"></script>
 </body>
 </html>

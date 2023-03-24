@@ -1,0 +1,7 @@
+.dialog__popup_type_edit {
+    max-width: 430px;
+    min-width: 282px;
+    border-radius: 10px;
+    background: #FFFFFF;
+    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.15);
+}

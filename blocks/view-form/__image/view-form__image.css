@@ -1,0 +1,9 @@
+.view-form__image {
+    margin: 0;
+    padding: 0;
+    object-fit: cover;
+    max-width: 75vw;
+    max-height: 75vh;
+    height: 100%;
+    width: 100%;
+}

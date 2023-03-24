@@ -3,10 +3,5 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    max-width: 430px;
-    min-width: 282px;
     box-sizing: border-box;
-    border-radius: 10px;
-    background: #FFFFFF;
-    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.15);
 }

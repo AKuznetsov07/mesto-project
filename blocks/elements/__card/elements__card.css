@@ -3,10 +3,12 @@
     margin: 0;
     background: #FFFFFF;
     border-radius: 10px;
+    position: relative;
     display: grid;
     grid-template-columns: 1fr minmax(min-content,max-content);
     box-sizing: border-box;
     grid-template-areas:
+        "image image"
         "image image"
         "caption like-button"
 }
