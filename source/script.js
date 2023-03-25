@@ -1,6 +1,8 @@
 const dialog = document.querySelector('.dialog');
 const profile = document.querySelector('.profile');
 const popup = document.querySelector('.dialog__popup');
+const editForm = popup.querySelector('.edit-form');
+const viewForm = popup.querySelector('.view-form');
 const formPopupTypeDictionary = { "edit-form": "dialog__popup_type_edit", "view-form": "dialog__popup_type_view" };
 const closeDialogTimeout = 0.5;
 let openedForm = null;
@@ -24,6 +26,8 @@ function InitializeCommands() {
     document.querySelector('.profile__add-button').addEventListener('click', OnAddButtonClick);
     document.querySelector('.profile__edit-button').addEventListener('click', OnEditButtonClick);
     document.querySelector('.dialog__cancel-button').addEventListener('click', OnCloseButtonClick);
+
+    editForm.addEventListener('submit',OnEditSubmit);
 }
 
 /// <summary>
@@ -101,9 +105,8 @@ function OpenDialog(form) {
     SetPopupType(Array.from(form.classList).map((formClass) => {
         return formPopupTypeDictionary[formClass];
     }));
-
     openedForm = form;
-
+    openedForm.classList.remove('hidden-node');
     dialog.classList.add('dialog_opened');
     popup.append(form);
 }
@@ -132,9 +135,37 @@ function CloseDialog() {
     dialog.classList.remove('dialog_opened');
 
     setTimeout(() => {
-        popup.removeChild(openedForm);
+        openedForm.classList.add('hidden-node');
         openedForm = null;
     },closeDialogTimeout*1000)
+}
+
+/// <summary>
+/// Подготавливает окно редактирования к редактиованию карточки.
+/// </summary>
+function PrepareFormToEditCard() {
+    editForm['submitType'] = 'CardEdit';
+    editForm.querySelector('.edit-form__heading').textContent = 'Новое место';
+    editForm.Name.placeholder = 'Название';
+    editForm.Property.placeholder = 'Ссылка на картинку';
+
+    editForm.Name.value = '';
+    editForm.Property.value = '';
+}
+
+
+/// <summary>
+/// Подготавливает окно редактирования к редактиованию профиля.
+/// </summary>
+function PrepareFormToEditProfile() {
+    editForm['submitType'] = 'ProfileEdit';
+    editForm.querySelector('.edit-form__heading').textContent = 'Редактировать профиль';
+    editForm.Name.placeholder = 'Фио';
+    editForm.Property.placeholder = 'Профессия';
+
+    editForm.Name.value = profile.querySelector('.profile__fio').textContent;
+    editForm.Property.value = profile.querySelector('.profile__profession').textContent;
+
 }
 
 /// <summary>
@@ -160,10 +191,8 @@ function OnRemoveButtonClick(eventArgs,sender) {
 /// </summary>
 /// <param name="eventArgs">Аргументы события.</param>
 function OnAddButtonClick(eventArgs) {
-    let form = CreateNodeByTemplateID('#editCardFormTemplate');
-
-    form.addEventListener('submit', OnEditCardSubmit);
-    OpenDialog(form);
+    PrepareFormToEditCard();
+    OpenDialog(editForm);
 }
 
 /// <summary>
@@ -171,12 +200,8 @@ function OnAddButtonClick(eventArgs) {
 /// </summary>
 /// <param name="eventArgs">Аргументы события.</param>
 function OnEditButtonClick(eventArgs) {
-    let form = CreateNodeByTemplateID('#editProfileFormTemplate');
-
-    form.Fio.value = profile.querySelector('.profile__fio').textContent;
-    form.Profession.value = profile.querySelector('.profile__profession').textContent;
-    form.addEventListener('submit', OnEditProfileSubmit);
-    OpenDialog(form);
+    PrepareFormToEditProfile();
+    OpenDialog(editForm);
 }
 
 /// <summary>
@@ -188,13 +213,38 @@ function OnCloseButtonClick(eventArgs) {
 }
 
 /// <summary>
+/// Обработчик события нажатия на изображение карточки.
+/// </summary>
+/// <param name="eventArgs">Аргументы события.</param>
+function OnImageClick(eventArgs, sender) {
+    viewForm.querySelector('.view-form__image').src = sender.querySelector('.elements__image').src;
+    viewForm.querySelector('.view-form__caption').textContent = sender.querySelector('.elements__caption').textContent;
+    OpenDialog(viewForm);
+}
+
+/// <summary>
+/// Обработчик события нажатия кнопки принятия изменений в окне редактирования.
+/// </summary>
+/// <param name="eventArgs">Аргументы события.</param>
+function OnEditSubmit(eventArgs) {
+    switch (openedForm['submitType']) {
+        case 'CardEdit':
+            SubmitEditCard(eventArgs)
+            break;
+        case 'ProfileEdit':
+            SubmitEditProfile(eventArgs)
+            break;
+    }
+}
+
+/// <summary>
 /// Обработчик события нажатия кнопки принятия изменений в окне редактирования профиля.
 /// </summary>
 /// <param name="eventArgs">Аргументы события.</param>
-function OnEditProfileSubmit(eventArgs) {
+function SubmitEditProfile(eventArgs) {
     eventArgs.preventDefault();
-    profile.querySelector('.profile__fio').textContent = openedForm.Fio.value;
-    profile.querySelector('.profile__profession').textContent = openedForm.Profession.value;
+    profile.querySelector('.profile__fio').textContent = openedForm.Name.value;
+    profile.querySelector('.profile__profession').textContent = openedForm.Property.value;
     CloseDialog();
 }
 
@@ -202,20 +252,8 @@ function OnEditProfileSubmit(eventArgs) {
 /// Обработчик события нажатия кнопки принятия изменений в окне редактирования карточки.
 /// </summary>
 /// <param name="eventArgs">Аргументы события.</param>
-function OnEditCardSubmit(eventArgs) {
+function SubmitEditCard(eventArgs) {
     eventArgs.preventDefault();
-    CreatePlaceCard(openedForm.CardName.value, openedForm.ImgLink.value, '');
+    CreatePlaceCard(openedForm.Name.value, openedForm.Property.value, '');
     CloseDialog();
-}
-
-/// <summary>
-/// Обработчик события нажатия на изображение карточки.
-/// </summary>
-/// <param name="eventArgs">Аргументы события.</param>
-function OnImageClick(eventArgs, sender) {
-    let form = CreateNodeByTemplateID('#cardViewFormTemplate');
-    form.querySelector('.view-form__image').src = sender.querySelector('.elements__image').src;
-    form.querySelector('.view-form__caption').textContent = sender.querySelector('.elements__caption').textContent;
-
-    OpenDialog(form);
 }

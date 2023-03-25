@@ -2,11 +2,15 @@
   "ExpandedNodes": [
     "",
     "\\blocks",
+    "\\blocks\\dialog",
+    "\\blocks\\dialog\\_opened",
+    "\\blocks\\dialog\\__popup\\_type",
+    "\\blocks\\edit-form\\__button",
+    "\\blocks\\edit-form\\__button\\_action",
     "\\blocks\\elements",
-    "\\blocks\\elements\\__card",
-    "\\blocks\\elements\\__like-button",
-    "\\pages",
-    "\\source"
+    "\\blocks\\view-form",
+    "\\blocks\\view-form\\__caption"
   ],
+  "SelectedNode": "\\blocks\\dialog\\_opened\\dialog_opened.css",
   "PreviewInSolutionExplorer": false
 }

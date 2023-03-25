@@ -30,6 +30,18 @@
     <div class="dialog dialog_closed">
         <div class="dialog__popup">
             <button type="button" class="dialog__cancel-button interactive-item"></button>
+
+
+            <form class="edit-form hidden-node" name="Edit">
+                <h2 class="edit-form__heading">Редактировать профиль</h2>
+                <input type="text" class="edit-form__item" name="Name" placeholder="Фио" value="" required>
+                <input type="text" class="edit-form__item" name="Property" placeholder="Профессия" value="" required>
+                <button type="submit" class="edit-form__button edit-form__button_action_submit interactive-item">Сохранить</button>
+            </form>
+            <figure class="view-form hidden-node">
+                <img class="view-form__image" src="" alt="" />
+                <figcaption class="view-form__caption"></figcaption>
+            </figure>
         </div>
     </div>
 
@@ -42,29 +54,6 @@
             <h2 class="elements__caption"></h2>
             <button type="button" class="elements__like-button interactive-item"></button>
         </div>
-    </template>
-
-    <template id="editProfileFormTemplate">
-        <form class="edit-form" name="EditBio">
-            <h2 class="edit-form__heading">Редактировать профиль</h2>
-            <input type="text" class="edit-form__item" name="Fio" placeholder="Фио" value="" required>
-            <input type="text" class="edit-form__item" name="Profession" placeholder="Профессия" value="" required>
-            <button type="submit" class="edit-form__button edit-form__button_action_submit interactive-item">Сохранить</button>
-        </form>
-    </template>
-    <template id="editCardFormTemplate">
-        <form class="edit-form" name="EditCard">
-            <h2 class="edit-form__heading">Новое место</h2>
-            <input type="text" class="edit-form__item" name="CardName" placeholder="Название" value="" required>
-            <input type="text" class="edit-form__item" name="ImgLink" placeholder="Ссылка на картинку" value="" required>
-            <button type="submit" class="edit-form__button edit-form__button_action_submit interactive-item">Создать</button>
-        </form>
-    </template>
-    <template id="cardViewFormTemplate">
-        <figure class="view-form">
-            <img class="view-form__image" src="" alt="" />
-            <figcaption class="view-form__caption"></figcaption>
-        </figure>
     </template>
 
     <script src="source/script.js"></script>
