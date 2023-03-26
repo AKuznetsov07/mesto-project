@@ -1,9 +1,12 @@
 const dialog = document.querySelector('.dialog');
 const profile = document.querySelector('.profile');
+const profileFio = profile.querySelector('.profile__fio');
+const profileProfession = profile.querySelector('.profile__profession');
 const popup = document.querySelector('.dialog__popup');
 const editBioForm = popup.querySelector('.edit-form_type_bio');
 const editCardForm = popup.querySelector('.edit-form_type_card');
 const viewForm = popup.querySelector('.view-form');
+const placesList = document.querySelector('.elements');
 const formPopupTypeDictionary = { "edit-form": "dialog__popup_type_edit", "view-form": "dialog__popup_type_view" };
 const closeDialogTimeout = 0.5;
 let openedForm = null;
@@ -63,7 +66,6 @@ function PrepareMockData() {
 /// <param name="imgUri">Указатель на изображение.</param>
 /// <param name="imgAlt">Альтернативный текст изображения.</param>
 function CreatePlaceCard(placeTitle, imgUri, imgAlt) {
-    const placesList = document.querySelector('.elements');
     let placeNode = CreateNodeByTemplateID('#placeCardTemplate');
     if (placeNode) {
         let image = placeNode.querySelector('.elements__image');
@@ -157,8 +159,8 @@ function PrepareFormToEditCard() {
 /// Подготавливает окно редактирования к редактиованию профиля.
 /// </summary>
 function PrepareFormToEditProfile() {
-    editBioForm.Fio.value = profile.querySelector('.profile__fio').textContent;
-    editBioForm.Profession.value = profile.querySelector('.profile__profession').textContent;
+    editBioForm.Fio.value = profileFio.textContent;
+    editBioForm.Profession.value = profileProfession.textContent;
 
 }
 
@@ -176,7 +178,6 @@ function HandleLikeButtonClick(eventArgs) {
 /// <param name="eventArgs">Аргументы события.</param>
 /// <param name="sender">Источник события.</param>
 function HandleRemoveButtonClick(eventArgs,sender) {
-    const placesList = document.querySelector('.elements');
     placesList.removeChild(sender);
 }
 
@@ -222,8 +223,8 @@ function HandleImageClick(eventArgs, sender) {
 /// <param name="eventArgs">Аргументы события.</param>
 function SubmitEditProfile(eventArgs) {
     eventArgs.preventDefault();
-    profile.querySelector('.profile__fio').textContent = openedForm.Fio.value;
-    profile.querySelector('.profile__profession').textContent = openedForm.Profession.value;
+    profileFio.textContent = openedForm.Fio.value;
+    profileProfession.textContent = openedForm.Profession.value;
     CloseDialog();
 }
 
