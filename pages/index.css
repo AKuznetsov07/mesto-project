@@ -18,6 +18,8 @@
 @import url(../blocks/edit-form/__item/edit-form__item.css);
 @import url(../blocks/edit-form/__heading/edit-form__heading.css);
 @import url(../blocks/edit-form/__button/edit-form__button.css);
+@import url(../blocks/edit-form/_type/edit-form_type_card.css);
+@import url(../blocks/edit-form/_type/edit-form_type_bio.css);
 @import url(../blocks/edit-form/__button/_action/edit-form__button_action_submit.css);
 
 

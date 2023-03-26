@@ -1,11 +1,14 @@
 const dialog = document.querySelector('.dialog');
 const profile = document.querySelector('.profile');
 const popup = document.querySelector('.dialog__popup');
-const editForm = popup.querySelector('.edit-form');
+const editBioForm = popup.querySelector('.edit-form_type_bio');
+const editCardForm = popup.querySelector('.edit-form_type_card');
 const viewForm = popup.querySelector('.view-form');
 const formPopupTypeDictionary = { "edit-form": "dialog__popup_type_edit", "view-form": "dialog__popup_type_view" };
 const closeDialogTimeout = 0.5;
 let openedForm = null;
+
+
 Initialize();
 
 
@@ -23,11 +26,12 @@ function Initialize() {
 /// Инициализирует команды.
 /// </summary>
 function InitializeCommands() {
-    document.querySelector('.profile__add-button').addEventListener('click', OnAddButtonClick);
-    document.querySelector('.profile__edit-button').addEventListener('click', OnEditButtonClick);
-    document.querySelector('.dialog__cancel-button').addEventListener('click', OnCloseButtonClick);
+    document.querySelector('.profile__add-button').addEventListener('click', HandleAddButtonClick);
+    document.querySelector('.profile__edit-button').addEventListener('click', HandleEditButtonClick);
+    document.querySelector('.dialog__cancel-button').addEventListener('click', HandleCloseButtonClick);
 
-    editForm.addEventListener('submit',OnEditSubmit);
+    editBioForm.addEventListener('submit', SubmitEditProfile);
+    editCardForm.addEventListener('submit', SubmitEditCard);
 }
 
 /// <summary>
@@ -68,12 +72,12 @@ function CreatePlaceCard(placeTitle, imgUri, imgAlt) {
         image.alt = imgAlt;
 
 
-        placeNode.querySelector('.elements__like-button').addEventListener('click', OnLikeButtonClick);
-        placeNode.querySelector('.elements__remove-button').addEventListener('click', (eventArgs) => OnRemoveButtonClick(eventArgs, placeNode));
-        image.addEventListener('click', (eventArgs) => OnImageClick(eventArgs, placeNode));
+        placeNode.querySelector('.elements__like-button').addEventListener('click', HandleLikeButtonClick);
+        placeNode.querySelector('.elements__remove-button').addEventListener('click', (eventArgs) => HandleRemoveButtonClick(eventArgs, placeNode));
+        image.addEventListener('click', (eventArgs) => HandleImageClick(eventArgs, placeNode));
 
 
-        placesList.append(placeNode);
+        placesList.prepend(placeNode);
     }
 
 }
@@ -144,13 +148,8 @@ function CloseDialog() {
 /// Подготавливает окно редактирования к редактиованию карточки.
 /// </summary>
 function PrepareFormToEditCard() {
-    editForm['submitType'] = 'CardEdit';
-    editForm.querySelector('.edit-form__heading').textContent = 'Новое место';
-    editForm.Name.placeholder = 'Название';
-    editForm.Property.placeholder = 'Ссылка на картинку';
-
-    editForm.Name.value = '';
-    editForm.Property.value = '';
+    editCardForm.CardName.value = '';
+    editCardForm.ImgLink.value = '';
 }
 
 
@@ -158,13 +157,8 @@ function PrepareFormToEditCard() {
 /// Подготавливает окно редактирования к редактиованию профиля.
 /// </summary>
 function PrepareFormToEditProfile() {
-    editForm['submitType'] = 'ProfileEdit';
-    editForm.querySelector('.edit-form__heading').textContent = 'Редактировать профиль';
-    editForm.Name.placeholder = 'Фио';
-    editForm.Property.placeholder = 'Профессия';
-
-    editForm.Name.value = profile.querySelector('.profile__fio').textContent;
-    editForm.Property.value = profile.querySelector('.profile__profession').textContent;
+    editBioForm.Fio.value = profile.querySelector('.profile__fio').textContent;
+    editBioForm.Profession.value = profile.querySelector('.profile__profession').textContent;
 
 }
 
@@ -172,7 +166,7 @@ function PrepareFormToEditProfile() {
 /// Обработчик события нажатия кнопки "лайка" карточки.
 /// </summary>
 /// <param name="eventArgs">Аргументы события.</param>
-function OnLikeButtonClick(eventArgs) {
+function HandleLikeButtonClick(eventArgs) {
     eventArgs.target.classList.toggle('elements__like-button_selected');
 }
 
@@ -181,7 +175,7 @@ function OnLikeButtonClick(eventArgs) {
 /// </summary>
 /// <param name="eventArgs">Аргументы события.</param>
 /// <param name="sender">Источник события.</param>
-function OnRemoveButtonClick(eventArgs,sender) {
+function HandleRemoveButtonClick(eventArgs,sender) {
     const placesList = document.querySelector('.elements');
     placesList.removeChild(sender);
 }
@@ -190,25 +184,25 @@ function OnRemoveButtonClick(eventArgs,sender) {
 /// Обработчик события нажатия кнопки добавления карточки.
 /// </summary>
 /// <param name="eventArgs">Аргументы события.</param>
-function OnAddButtonClick(eventArgs) {
+function HandleAddButtonClick(eventArgs) {
     PrepareFormToEditCard();
-    OpenDialog(editForm);
+    OpenDialog(editCardForm);
 }
 
 /// <summary>
 /// Обработчик события нажатия кнопки редактирования профиля.
 /// </summary>
 /// <param name="eventArgs">Аргументы события.</param>
-function OnEditButtonClick(eventArgs) {
+function HandleEditButtonClick(eventArgs) {
     PrepareFormToEditProfile();
-    OpenDialog(editForm);
+    OpenDialog(editBioForm);
 }
 
 /// <summary>
 /// Обработчик события нажатия кнопки закрытия попапа.
 /// </summary>
 /// <param name="eventArgs">Аргументы события.</param>
-function OnCloseButtonClick(eventArgs) {
+function HandleCloseButtonClick(eventArgs) {
     CloseDialog();
 }
 
@@ -216,25 +210,10 @@ function OnCloseButtonClick(eventArgs) {
 /// Обработчик события нажатия на изображение карточки.
 /// </summary>
 /// <param name="eventArgs">Аргументы события.</param>
-function OnImageClick(eventArgs, sender) {
+function HandleImageClick(eventArgs, sender) {
     viewForm.querySelector('.view-form__image').src = sender.querySelector('.elements__image').src;
     viewForm.querySelector('.view-form__caption').textContent = sender.querySelector('.elements__caption').textContent;
     OpenDialog(viewForm);
-}
-
-/// <summary>
-/// Обработчик события нажатия кнопки принятия изменений в окне редактирования.
-/// </summary>
-/// <param name="eventArgs">Аргументы события.</param>
-function OnEditSubmit(eventArgs) {
-    switch (openedForm['submitType']) {
-        case 'CardEdit':
-            SubmitEditCard(eventArgs)
-            break;
-        case 'ProfileEdit':
-            SubmitEditProfile(eventArgs)
-            break;
-    }
 }
 
 /// <summary>
@@ -243,8 +222,8 @@ function OnEditSubmit(eventArgs) {
 /// <param name="eventArgs">Аргументы события.</param>
 function SubmitEditProfile(eventArgs) {
     eventArgs.preventDefault();
-    profile.querySelector('.profile__fio').textContent = openedForm.Name.value;
-    profile.querySelector('.profile__profession').textContent = openedForm.Property.value;
+    profile.querySelector('.profile__fio').textContent = openedForm.Fio.value;
+    profile.querySelector('.profile__profession').textContent = openedForm.Profession.value;
     CloseDialog();
 }
 
@@ -254,6 +233,6 @@ function SubmitEditProfile(eventArgs) {
 /// <param name="eventArgs">Аргументы события.</param>
 function SubmitEditCard(eventArgs) {
     eventArgs.preventDefault();
-    CreatePlaceCard(openedForm.Name.value, openedForm.Property.value, '');
+    CreatePlaceCard(openedForm.CardName.value, openedForm.ImgLink.value, openedForm.CardName.value);
     CloseDialog();
 }
