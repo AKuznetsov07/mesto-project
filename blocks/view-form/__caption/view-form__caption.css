@@ -1,4 +1,6 @@
 .view-form__caption {
+    margin: 0;
+    padding: 0;
     background-color: transparent;
     font-family: 'Inter';
     font-style: normal;
