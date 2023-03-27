@@ -1,4 +1,5 @@
-.dialog {
+.popup {
+    transition: visibility 0.5s, opacity 0.5s linear;
     visibility: hidden;
     opacity: 0;
     display: block;

@@ -1,53 +1,50 @@
-const dialog = document.querySelector('.dialog');
 const profile = document.querySelector('.profile');
 const profileFio = profile.querySelector('.profile__fio');
 const profileProfession = profile.querySelector('.profile__profession');
-const popup = document.querySelector('.dialog__popup');
-const editBioForm = popup.querySelector('.edit-form_type_bio');
-const editCardForm = popup.querySelector('.edit-form_type_card');
-const viewForm = popup.querySelector('.view-form');
+
+const editCardPopup = document.querySelector('.popup_type_edit-card');
+const editBioPopup = document.querySelector('.popup_type_edit-bio');
+const viewCardPopup = document.querySelector('.popup_type_view-card');
+
+const editCardForm = editCardPopup.querySelector('.edit-form');
+const editBioForm = editBioPopup.querySelector('.edit-form');
+
+
 const placesList = document.querySelector('.elements');
-const formPopupTypeDictionary = { "edit-form": "dialog__popup_type_edit", "view-form": "dialog__popup_type_view" };
-const closeDialogTimeout = 0.5;
-let openedForm = null;
 
 
-Initialize();
+initialize();
 
 
 
 /// <summary>
 /// Инициализирует страницу.
 /// </summary>
-function Initialize() {
-    InitializeView();
-    InitializeCommands();
-    PrepareMockData();
+function initialize() {
+    initializeCommands();
+    prepareMockData();
 }
 
 /// <summary>
 /// Инициализирует команды.
 /// </summary>
-function InitializeCommands() {
-    document.querySelector('.profile__add-button').addEventListener('click', HandleAddButtonClick);
-    document.querySelector('.profile__edit-button').addEventListener('click', HandleEditButtonClick);
-    document.querySelector('.dialog__cancel-button').addEventListener('click', HandleCloseButtonClick);
+function initializeCommands() {
+    document.querySelector('.profile__add-button').addEventListener('click', (eventArgs) => handleAddButtonClick(eventArgs));
+    document.querySelector('.profile__edit-button').addEventListener('click', (eventArgs) => handleEditButtonClick(eventArgs));
 
-    editBioForm.addEventListener('submit', SubmitEditProfile);
-    editCardForm.addEventListener('submit', SubmitEditCard);
-}
+    editBioForm.addEventListener('submit', (eventArgs) => submitEditProfile(eventArgs, editBioPopup));
+    editCardForm.addEventListener('submit', (eventArgs) => submitEditCard(eventArgs, editCardPopup));
 
-/// <summary>
-/// Инициализирует представление.
-/// </summary>
-function InitializeView() {
-    dialog.style.transition = `visibility ${closeDialogTimeout}s, opacity ${closeDialogTimeout}s linear`;
+
+    editCardPopup.querySelector('.popup__cancel-button').addEventListener('click', (eventArgs) => handleCloseButtonClick(eventArgs, editCardPopup));
+    editBioPopup.querySelector('.popup__cancel-button').addEventListener('click', (eventArgs) => handleCloseButtonClick(eventArgs, editBioPopup));
+    viewCardPopup.querySelector('.popup__cancel-button').addEventListener('click', (eventArgs) => handleCloseButtonClick(eventArgs, viewCardPopup));
 }
 
 /// <summary>
 /// Подготавливает тестовые данные.
 /// </summary>
-function PrepareMockData() {
+function prepareMockData() {
     const mockCollection = [
         { title: 'Не за горами', uri: './images/123.jpg', alt: 'Сомнительный успех' },
         { title: 'Карачаевск', uri: './images/karachaevsk.jpg', alt: 'Фото старого здания' },
@@ -56,7 +53,7 @@ function PrepareMockData() {
         { title: 'Гора Эльбрус', uri: './images/elbrus.jpg', alt: 'Фото Эльбруса' },
         { title: 'Домбай', uri: './images/dombay.jpg', alt: 'Фото гор' },
     ];
-    mockCollection.forEach((mockElement) => { CreatePlaceCard(mockElement.title, mockElement.uri, mockElement.alt) });
+    mockCollection.forEach((mockElement) => { createPlaceCard(mockElement.title, mockElement.uri, mockElement.alt) });
 }
 
 /// <summary>
@@ -65,8 +62,8 @@ function PrepareMockData() {
 /// <param name="placeTitle">Заголовок карточки.</param>
 /// <param name="imgUri">Указатель на изображение.</param>
 /// <param name="imgAlt">Альтернативный текст изображения.</param>
-function CreatePlaceCard(placeTitle, imgUri, imgAlt) {
-    let placeNode = CreateNodeByTemplateID('#placeCardTemplate');
+function createPlaceCard(placeTitle, imgUri, imgAlt) {
+    let placeNode = createNodeByTemplateID('#placeCardTemplate');
     if (placeNode) {
         let image = placeNode.querySelector('.elements__image');
         placeNode.querySelector('.elements__caption').textContent = placeTitle;
@@ -74,9 +71,9 @@ function CreatePlaceCard(placeTitle, imgUri, imgAlt) {
         image.alt = imgAlt;
 
 
-        placeNode.querySelector('.elements__like-button').addEventListener('click', HandleLikeButtonClick);
-        placeNode.querySelector('.elements__remove-button').addEventListener('click', (eventArgs) => HandleRemoveButtonClick(eventArgs, placeNode));
-        image.addEventListener('click', (eventArgs) => HandleImageClick(eventArgs, placeNode));
+        placeNode.querySelector('.elements__like-button').addEventListener('click', (eventArgs) => handleLikeButtonClick(eventArgs, placeNode));
+        placeNode.querySelector('.elements__remove-button').addEventListener('click', (eventArgs) => handleRemoveButtonClick(eventArgs, placeNode));
+        image.addEventListener('click', (eventArgs) => handleImageClick(eventArgs, placeNode));
 
 
         placesList.prepend(placeNode);
@@ -89,12 +86,12 @@ function CreatePlaceCard(placeTitle, imgUri, imgAlt) {
 /// </summary>
 /// <param name="id">Идентификатор шаблона.</param>
 /// <returns>Созданный узел.</returns>
-function CreateNodeByTemplateID(id) {
+function createNodeByTemplateID(id) {
     if (!id)
-        throw new Error(`"CreateNodeByTemplateID(id)": ${id} is invalid parameter!`);
+        throw new Error(`"createNodeByTemplateID(id)": ${id} is invalid parameter!`);
     let template = document.querySelector(id).content;
     if (!template)
-        throw new Error(`"CreateNodeByTemplateID(id)": template with id:"${id}" doesnt exist!`);
+        throw new Error(`"createNodeByTemplateID(id)": template with id:"${id}" doesnt exist!`);
 
     return template.firstElementChild.cloneNode(true);
 }
@@ -103,53 +100,25 @@ function CreateNodeByTemplateID(id) {
 /// Открывает попап с выбранной формой.
 /// </summary>
 /// <param name="form">Форма для которой необходимо открыть попап.</param>
-function OpenDialog(form) {
+function openDialog(popup) {
 
-    if (!form)
-        throw new Error(`"OpenDialog(dialogType)": cant create dialog!`);
+    if (!popup)
+        throw new Error(`"openDialog(dialogType)": cant create dialog!`);
 
-    SetPopupType(Array.from(form.classList).map((formClass) => {
-        return formPopupTypeDictionary[formClass];
-    }));
-    openedForm = form;
-    openedForm.classList.remove('hidden-node');
-    dialog.classList.add('dialog_opened');
-    popup.append(form);
-}
-
-/// <summary>
-/// Задает всплывающему окну стиль в зависимости от типа открываемого окна.
-/// </summary>
-/// <param name="popupTypes">Тип открываемого окна.</param>
-function SetPopupType(popupTypes) {
-    popup.classList.forEach((excistingType) => {
-        if (excistingType != 'dialog__popup')
-            popup.classList.remove(excistingType);
-    })
-    if (!popupTypes)
-        throw new Error(`"SetPopupType(popupTypes)": popupTypes cant be:"${popupTypes}"!`);
-    popupTypes.forEach((newType) => {
-        if (newType)
-            popup.classList.add(newType)
-    })
+    popup.classList.add('popup_opened');
 }
 
 /// <summary>
 /// Закрывает попап.
 /// </summary>
-function CloseDialog() {
-    dialog.classList.remove('dialog_opened');
-
-    setTimeout(() => {
-        openedForm.classList.add('hidden-node');
-        openedForm = null;
-    },closeDialogTimeout*1000)
+function closeDialog(popup) {
+    popup.classList.remove('popup_opened');
 }
 
 /// <summary>
 /// Подготавливает окно редактирования к редактиованию карточки.
 /// </summary>
-function PrepareFormToEditCard() {
+function prepareFormToEditCard() {
     editCardForm.CardName.value = '';
     editCardForm.ImgLink.value = '';
 }
@@ -158,7 +127,7 @@ function PrepareFormToEditCard() {
 /// <summary>
 /// Подготавливает окно редактирования к редактиованию профиля.
 /// </summary>
-function PrepareFormToEditProfile() {
+function prepareFormToEditProfile() {
     editBioForm.Fio.value = profileFio.textContent;
     editBioForm.Profession.value = profileProfession.textContent;
 
@@ -168,7 +137,7 @@ function PrepareFormToEditProfile() {
 /// Обработчик события нажатия кнопки "лайка" карточки.
 /// </summary>
 /// <param name="eventArgs">Аргументы события.</param>
-function HandleLikeButtonClick(eventArgs) {
+function handleLikeButtonClick(eventArgs, sender) {
     eventArgs.target.classList.toggle('elements__like-button_selected');
 }
 
@@ -177,7 +146,7 @@ function HandleLikeButtonClick(eventArgs) {
 /// </summary>
 /// <param name="eventArgs">Аргументы события.</param>
 /// <param name="sender">Источник события.</param>
-function HandleRemoveButtonClick(eventArgs,sender) {
+function handleRemoveButtonClick(eventArgs,sender) {
     placesList.removeChild(sender);
 }
 
@@ -185,55 +154,59 @@ function HandleRemoveButtonClick(eventArgs,sender) {
 /// Обработчик события нажатия кнопки добавления карточки.
 /// </summary>
 /// <param name="eventArgs">Аргументы события.</param>
-function HandleAddButtonClick(eventArgs) {
-    PrepareFormToEditCard();
-    OpenDialog(editCardForm);
+function handleAddButtonClick(eventArgs) {
+    prepareFormToEditCard();
+    openDialog(editCardPopup);
 }
 
 /// <summary>
 /// Обработчик события нажатия кнопки редактирования профиля.
 /// </summary>
 /// <param name="eventArgs">Аргументы события.</param>
-function HandleEditButtonClick(eventArgs) {
-    PrepareFormToEditProfile();
-    OpenDialog(editBioForm);
+function handleEditButtonClick(eventArgs) {
+    prepareFormToEditProfile();
+    openDialog(editBioPopup);
 }
 
 /// <summary>
 /// Обработчик события нажатия кнопки закрытия попапа.
 /// </summary>
 /// <param name="eventArgs">Аргументы события.</param>
-function HandleCloseButtonClick(eventArgs) {
-    CloseDialog();
+/// <param name="sender">Источник события.</param>
+function handleCloseButtonClick(eventArgs, sender) {
+    closeDialog(sender);
 }
 
 /// <summary>
 /// Обработчик события нажатия на изображение карточки.
 /// </summary>
 /// <param name="eventArgs">Аргументы события.</param>
-function HandleImageClick(eventArgs, sender) {
-    viewForm.querySelector('.view-form__image').src = sender.querySelector('.elements__image').src;
-    viewForm.querySelector('.view-form__caption').textContent = sender.querySelector('.elements__caption').textContent;
-    OpenDialog(viewForm);
+/// <param name="sender">Источник события.</param>
+function handleImageClick(eventArgs, sender) {
+    viewCardPopup.querySelector('.view-form__image').src = sender.querySelector('.elements__image').src;
+    viewCardPopup.querySelector('.view-form__caption').textContent = sender.querySelector('.elements__caption').textContent;
+    openDialog(viewCardPopup);
 }
 
 /// <summary>
 /// Обработчик события нажатия кнопки принятия изменений в окне редактирования профиля.
 /// </summary>
 /// <param name="eventArgs">Аргументы события.</param>
-function SubmitEditProfile(eventArgs) {
+/// <param name="sender">Источник события.</param>
+function submitEditProfile(eventArgs, sender) {
     eventArgs.preventDefault();
-    profileFio.textContent = openedForm.Fio.value;
-    profileProfession.textContent = openedForm.Profession.value;
-    CloseDialog();
+    profileFio.textContent = editBioForm.Fio.value;
+    profileProfession.textContent = editBioForm.Profession.value;
+    closeDialog(sender);
 }
 
 /// <summary>
 /// Обработчик события нажатия кнопки принятия изменений в окне редактирования карточки.
 /// </summary>
 /// <param name="eventArgs">Аргументы события.</param>
-function SubmitEditCard(eventArgs) {
+/// <param name="sender">Источник события.</param>
+function submitEditCard(eventArgs,sender) {
     eventArgs.preventDefault();
-    CreatePlaceCard(openedForm.CardName.value, openedForm.ImgLink.value, openedForm.CardName.value);
-    CloseDialog();
+    createPlaceCard(editCardForm.CardName.value, editCardForm.ImgLink.value, editCardForm.CardName.value);
+    closeDialog(sender);
 }

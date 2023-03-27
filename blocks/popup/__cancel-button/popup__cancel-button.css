@@ -1,4 +1,4 @@
-.dialog__cancel-button {
+.popup__cancel-button {
     margin: 0 0 37px;
     padding: 0;
     background: #000000;
@@ -16,12 +16,12 @@
     background-color: transparent;
     background-image: url(../../../images/close.svg);
 }
-.dialog__cancel-button:hover {
+.popup__cancel-button:hover {
     opacity: 0.6;
 }
 
 @media screen and (max-width: 767px) {
-    .dialog__cancel-button {
+    .popup__cancel-button {
         height: 20px;
         width: 20px;
         right: 0px;
