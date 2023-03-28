@@ -6,6 +6,8 @@ const editCardPopup = document.querySelector('.popup_type_edit-card');
 const editBioPopup = document.querySelector('.popup_type_edit-bio');
 const viewCardPopup = document.querySelector('.popup_type_view-card');
 
+const closeButtonList = document.querySelectorAll('.popup__cancel-button');
+
 const editCardForm = editCardPopup.querySelector('.edit-form');
 const editBioForm = editBioPopup.querySelector('.edit-form');
 
@@ -35,10 +37,10 @@ function initializeCommands() {
     editBioForm.addEventListener('submit', (eventArgs) => submitEditProfile(eventArgs, editBioPopup));
     editCardForm.addEventListener('submit', (eventArgs) => submitEditCard(eventArgs, editCardPopup));
 
-
-    editCardPopup.querySelector('.popup__cancel-button').addEventListener('click', (eventArgs) => handleCloseButtonClick(eventArgs, editCardPopup));
-    editBioPopup.querySelector('.popup__cancel-button').addEventListener('click', (eventArgs) => handleCloseButtonClick(eventArgs, editBioPopup));
-    viewCardPopup.querySelector('.popup__cancel-button').addEventListener('click', (eventArgs) => handleCloseButtonClick(eventArgs, viewCardPopup));
+    closeButtonList.forEach(closeButton => {
+        const popup = closeButton.closest('.popup');
+        closeButton.addEventListener('click', (eventArgs) => handleCloseButtonClick(eventArgs, popup));
+    });
 }
 
 /// <summary>
@@ -46,14 +48,14 @@ function initializeCommands() {
 /// </summary>
 function prepareMockData() {
     const mockCollection = [
-        { title: 'Не за горами', uri: './images/123.jpg', alt: 'Сомнительный успех' },
-        { title: 'Карачаевск', uri: './images/karachaevsk.jpg', alt: 'Фото старого здания' },
-        { title: 'Гора Эльбрус', uri: './images/elbrus.jpg', alt: 'Фото Эльбруса' },
-        { title: 'Карачаевск', uri: './images/karachaevsk.jpg', alt: 'Фото старого здания' },
-        { title: 'Гора Эльбрус', uri: './images/elbrus.jpg', alt: 'Фото Эльбруса' },
-        { title: 'Домбай', uri: './images/dombay.jpg', alt: 'Фото гор' },
+        { name: 'Не за горами', link: './images/123.jpg'},
+        { name: 'Карачаевск', link: './images/karachaevsk.jpg'},
+        { name: 'Гора Эльбрус', link: './images/elbrus.jpg'},
+        { name: 'Карачаевск', link: './images/karachaevsk.jpg'},
+        { name: 'Гора Эльбрус', link: './images/elbrus.jpg'},
+        { name: 'Домбай', link: './images/dombay.jpg'},
     ];
-    mockCollection.forEach((mockElement) => { createPlaceCard(mockElement.title, mockElement.uri, mockElement.alt) });
+    mockCollection.forEach((mockElement) => { hostNewCard(mockElement.name, mockElement.link, mockElement.name) });
 }
 
 /// <summary>
@@ -62,23 +64,31 @@ function prepareMockData() {
 /// <param name="placeTitle">Заголовок карточки.</param>
 /// <param name="imgUri">Указатель на изображение.</param>
 /// <param name="imgAlt">Альтернативный текст изображения.</param>
+/// <returns>Созданная карточка.</returns>
 function createPlaceCard(placeTitle, imgUri, imgAlt) {
-    let placeNode = createNodeByTemplateID('#placeCardTemplate');
-    if (placeNode) {
-        let image = placeNode.querySelector('.elements__image');
-        placeNode.querySelector('.elements__caption').textContent = placeTitle;
-        image.src = imgUri;
-        image.alt = imgAlt;
+    const placeNode = createNodeByTemplateID('#placeCardTemplate');
 
+    let image = placeNode.querySelector('.elements__image');
+    placeNode.querySelector('.elements__caption').textContent = placeTitle;
+    image.src = imgUri;
+    image.alt = imgAlt;
 
-        placeNode.querySelector('.elements__like-button').addEventListener('click', (eventArgs) => handleLikeButtonClick(eventArgs, placeNode));
-        placeNode.querySelector('.elements__remove-button').addEventListener('click', (eventArgs) => handleRemoveButtonClick(eventArgs, placeNode));
-        image.addEventListener('click', (eventArgs) => handleImageClick(eventArgs, placeNode));
+    placeNode.querySelector('.elements__like-button').addEventListener('click', (eventArgs) => handleLikeButtonClick(eventArgs, placeNode));
+    placeNode.querySelector('.elements__remove-button').addEventListener('click', (eventArgs) => handleRemoveButtonClick(eventArgs, placeNode));
+    image.addEventListener('click', (eventArgs) => handleImageClick(eventArgs, placeNode));
 
+    return placeNode;
+}
 
-        placesList.prepend(placeNode);
-    }
-
+/// <summary>
+/// Размещает новую картчку места на странице.
+/// </summary>
+/// <param name="placeTitle">Заголовок карточки.</param>
+/// <param name="imgUri">Указатель на изображение.</param>
+/// <param name="imgAlt">Альтернативный текст изображения.</param>
+function hostNewCard(placeTitle, imgUri, imgAlt) {
+    const createdCard = createPlaceCard(placeTitle, imgUri, imgAlt);
+    placesList.prepend(createdCard);
 }
 
 /// <summary>
@@ -87,11 +97,7 @@ function createPlaceCard(placeTitle, imgUri, imgAlt) {
 /// <param name="id">Идентификатор шаблона.</param>
 /// <returns>Созданный узел.</returns>
 function createNodeByTemplateID(id) {
-    if (!id)
-        throw new Error(`"createNodeByTemplateID(id)": ${id} is invalid parameter!`);
-    let template = document.querySelector(id).content;
-    if (!template)
-        throw new Error(`"createNodeByTemplateID(id)": template with id:"${id}" doesnt exist!`);
+    const template = document.querySelector(id).content;
 
     return template.firstElementChild.cloneNode(true);
 }
@@ -101,26 +107,14 @@ function createNodeByTemplateID(id) {
 /// </summary>
 /// <param name="form">Форма для которой необходимо открыть попап.</param>
 function openDialog(popup) {
-
-    if (!popup)
-        throw new Error(`"openDialog(dialogType)": cant create dialog!`);
-
     popup.classList.add('popup_opened');
-}
-
-/// <summary>
-/// Закрывает попап.
-/// </summary>
-function closeDialog(popup) {
-    popup.classList.remove('popup_opened');
 }
 
 /// <summary>
 /// Подготавливает окно редактирования к редактиованию карточки.
 /// </summary>
 function prepareFormToEditCard() {
-    editCardForm.CardName.value = '';
-    editCardForm.ImgLink.value = '';
+    editCardForm.reset();
 }
 
 
@@ -147,7 +141,7 @@ function handleLikeButtonClick(eventArgs, sender) {
 /// <param name="eventArgs">Аргументы события.</param>
 /// <param name="sender">Источник события.</param>
 function handleRemoveButtonClick(eventArgs,sender) {
-    placesList.removeChild(sender);
+    sender.remove();
 }
 
 /// <summary>
@@ -169,6 +163,13 @@ function handleEditButtonClick(eventArgs) {
 }
 
 /// <summary>
+/// Закрывает попап.
+/// </summary>
+function closeDialog(popup) {
+    popup.classList.remove('popup_opened');
+}
+
+/// <summary>
 /// Обработчик события нажатия кнопки закрытия попапа.
 /// </summary>
 /// <param name="eventArgs">Аргументы события.</param>
@@ -184,6 +185,7 @@ function handleCloseButtonClick(eventArgs, sender) {
 /// <param name="sender">Источник события.</param>
 function handleImageClick(eventArgs, sender) {
     viewCardPopup.querySelector('.view-form__image').src = sender.querySelector('.elements__image').src;
+    viewCardPopup.querySelector('.view-form__image').alt = sender.querySelector('.elements__caption').textContent;
     viewCardPopup.querySelector('.view-form__caption').textContent = sender.querySelector('.elements__caption').textContent;
     openDialog(viewCardPopup);
 }
@@ -207,6 +209,6 @@ function submitEditProfile(eventArgs, sender) {
 /// <param name="sender">Источник события.</param>
 function submitEditCard(eventArgs,sender) {
     eventArgs.preventDefault();
-    createPlaceCard(editCardForm.CardName.value, editCardForm.ImgLink.value, editCardForm.CardName.value);
+    hostNewCard(editCardForm.CardName.value, editCardForm.ImgLink.value, editCardForm.CardName.value);
     closeDialog(sender);
 }
