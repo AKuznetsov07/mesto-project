@@ -2,15 +2,16 @@
   "ExpandedNodes": [
     "",
     "\\blocks",
-    "\\blocks\\dialog\\__popup",
-    "\\blocks\\dialog\\__popup\\_type",
-    "\\blocks\\edit-form\\_type",
-    "\\blocks\\interactive-item",
+    "\\blocks\\edit-form",
+    "\\blocks\\popup",
+    "\\blocks\\popup\\_type",
+    "\\blocks\\popup\\__container",
+    "\\blocks\\popup\\__container\\_type",
     "\\blocks\\view-form",
     "\\blocks\\view-form\\__image",
     "\\pages",
     "\\source"
   ],
-  "SelectedNode": "\\index.html",
+  "SelectedNode": "\\blocks\\popup\\_type\\popup_type_view-card.css",
   "PreviewInSolutionExplorer": false
 }
