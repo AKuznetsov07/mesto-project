@@ -68,7 +68,7 @@ function prepareMockData() {
 function createPlaceCard(placeTitle, imgUri, imgAlt) {
     const placeNode = createNodeByTemplateID('#placeCardTemplate');
 
-    let image = placeNode.querySelector('.elements__image');
+    const image = placeNode.querySelector('.elements__image');
     placeNode.querySelector('.elements__caption').textContent = placeTitle;
     image.src = imgUri;
     image.alt = imgAlt;
