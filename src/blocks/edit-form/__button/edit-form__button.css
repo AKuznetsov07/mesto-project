@@ -18,3 +18,10 @@
         line-height: 17px;
     }
 }
+.edit-form__button:disabled {
+    opacity: 0.2;
+    border: 1px solid #000000;
+    border-radius: 2px;
+    background: #FFFFFF;
+    color: #000000;
+}

@@ -6,6 +6,7 @@
 @import url(../blocks/interactive-item/interactive-item.css);
 
 @import url(../blocks/hidden-node/hidden-node.css);
+@import url(../blocks/edit-item-error/edit-item-error.css);
 
 @import url(../blocks/popup/popup.css);
 @import url(../blocks/popup/_type/popup_type_edit-card.css);
@@ -19,6 +20,7 @@
 
 @import url(../blocks/edit-form/edit-form.css);
 @import url(../blocks/edit-form/__item/edit-form__item.css);
+@import url(../blocks/edit-form/__item/_error/edit-form__item_error.css);
 @import url(../blocks/edit-form/__heading/edit-form__heading.css);
 @import url(../blocks/edit-form/__button/edit-form__button.css);
 @import url(../blocks/edit-form/_type/edit-form_type_card.css);

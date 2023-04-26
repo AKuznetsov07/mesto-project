@@ -3,17 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="pages/index.css">
     <title>Путешествие по России</title>
 </head>
 <body class="body">
     <header class="header">
-        <img class="header__logo" src="./images/logo.svg" alt="Лого сайта" />
+        <img class="header__logo" src="<%=require('./images/logo.svg')%>" alt="Лого сайта" />
     </header>
 
     <main class="main">
         <section class="profile">
-            <img class="profile__avatar" src="./images/avatar.png" alt="Аватар профиля" />
+            <img class="profile__avatar" src="<%=require('./images/avatar.png')%>" alt="Аватар профиля" />
             <h1 class="profile__fio">Жак-Ив Кусто</h1>
             <button type="button" class="profile__edit-button interactive-item"></button>
             <p class="profile__profession">Исследователь океана</p>
@@ -33,8 +32,14 @@
 
             <form class="edit-form" name="EditBio">
                 <h2 class="edit-form__heading">Редактировать профиль</h2>
-                <input type="text" class="edit-form__item" name="Fio" placeholder="Фио" value="" required>
-                <input type="text" class="edit-form__item" name="Profession" placeholder="Профессия" value="" required>
+                <input type="text" class="edit-form__item" id="fio-input" name="Fio" placeholder="Фио" value="" required minlength="2" maxlength="40" pattern="^[а-яА-ЯёЁa-zA-Z\s-]+$" data-error-message="Допустимы только символы из кириллицы\латыни, пробелы и дефисы.">
+                <div class="input-block">
+                    <span class="edit-item-error fio-input-error"></span>
+                </div>
+                <input type="text" class="edit-form__item" id="profession-input" name="Profession" placeholder="Профессия" value="" required minlength="2" maxlength="200" pattern="^[а-яА-ЯёЁa-zA-Z\s-]+$" data-error-message="Допустимы только символы из кириллицы\латыни, пробелы и дефисы.">
+                <div class="input-block">
+                    <span class="edit-item-error profession-input-error"></span>
+                </div>
                 <button type="submit" class="edit-form__button edit-form__button_action_submit interactive-item">Сохранить</button>
             </form>
         </div>
@@ -45,9 +50,11 @@
 
             <form class="edit-form" name="EditCard">
                 <h2 class="edit-form__heading">Новое место</h2>
-                <input type="text" class="edit-form__item" name="CardName" placeholder="Название" value="" required>
-                <input type="text" class="edit-form__item" name="ImgLink" placeholder="Ссылка на картинку" value="" required>
-                <button type="submit" class="edit-form__button edit-form__button_action_submit interactive-item">Создать</button>
+                <input type="text" class="edit-form__item" id="card-name-input" name="CardName" placeholder="Название" value="" required minlength="2" maxlength="30" pattern="^[а-яА-ЯёЁa-zA-Z\s-]+$" data-error-message="Допустимы только символы из кириллицы\латыни, пробелы и дефисы.">
+                    <span class="edit-item-error card-name-input-error"></span>
+                <input type="url" class="edit-form__item" id="img-link-input" name="ImgLink" placeholder="Ссылка на картинку" value="" required>
+                    <span class="edit-item-error img-link-input-error"></span>
+                <button type="submit" name="submitButton" class="edit-form__button edit-form__button_action_submit interactive-item">Создать</button>
             </form>
         </div>
     </div>
@@ -71,7 +78,5 @@
             <button type="button" class="elements__like-button interactive-item"></button>
         </div>
     </template>
-
-    <script src="source/script.js"></script>
 </body>
 </html>

@@ -1,0 +1,55 @@
+let activePopup = null;
+
+export const popupsStateManager = {
+    handlePopup: (popup) => handlePopup(popup),
+    showPopup: (popup) => showPopup(popup),
+    closeActivePopup: () => closePopup(activePopup)
+}
+
+function handlePopup(popup) {
+    const closeButton = popup.querySelector('.popup__cancel-button');
+    if (closeButton) {
+        closeButton.addEventListener('click', (eventArgs) => handleCloseButtonClick(eventArgs, popup));
+    }
+    popup.addEventListener('mousedown', (eventArgs) => onPopupMouseDown(eventArgs, popup));
+}
+
+/// <summary>
+/// Открывает попап с выбранной формой.
+/// </summary>
+/// <param name="form">Форма для которой необходимо открыть попап.</param>
+function showPopup(popup) {
+    if (activePopup) {
+        closeDialog(activePopup);
+    }
+    popup.classList.add('popup_opened');
+    activePopup = popup;
+}
+
+/// <summary>
+/// Закрывает попап.
+/// </summary>
+function closePopup(popup) {
+    popup.classList.remove('popup_opened');
+    activePopup = null;
+}
+
+/// <summary>
+/// Обработчик события нажатия кнопки закрытия попапа.
+/// </summary>
+/// <param name="eventArgs">Аргументы события.</param>
+/// <param name="sender">Источник события.</param>
+function handleCloseButtonClick(eventArgs, sender) {
+    closePopup(sender);
+}
+
+/// <summary>
+/// Обработчик события mousedown у формы.
+/// </summary>
+/// <param name="eventArgs">Аргументы события.</param>
+/// <param name="sender">Источник события.</param>
+function onPopupMouseDown(eventArgs, sender) {
+            if (eventArgs.target.classList.contains('popup'))
+                closePopup(sender);
+        }
+
