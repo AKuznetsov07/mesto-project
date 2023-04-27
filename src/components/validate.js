@@ -1,22 +1,9 @@
 let editItemErrorClass = '';
+let inputSelectorName = '';
+let submitButtonSelectorName = '';
 export const formValidator = {
-    enableValidation: (validationSettings) => enableValidation(validationSettings)
-}
-
-/// <summary>
-/// Инициализирует валидацию формы.
-/// </summary>
-function initializeFormValidation(editForm) {///Todo:в тз была вроде рофляная шляпа с эррейем аргументов, зато аргумент один, Р.Мартин доволен, надо глянуть и переписать.
-    const inputList = Array.from(editForm.querySelectorAll('.edit-form__item'));
-    const buttonElement = editForm.querySelector('.edit-form__button_action_submit');
-
-    toggleButtonState(inputList, buttonElement);
-    inputList.forEach((inputElement) => {
-        inputElement.addEventListener('input', (eventArgs) => {
-            onFormInput(editForm, inputElement, eventArgs)
-            toggleButtonState(inputList, buttonElement)
-        });
-    });
+    enableValidation: (validationSettings) => enableValidation(validationSettings),
+    prepareFormValidation: (form) => prepareFormValidation(form)
 }
 
 /// <summary>
@@ -24,10 +11,12 @@ function initializeFormValidation(editForm) {///Todo:в тз была вроде рофляная шл
 /// </summary>
 function enableValidation(validationSettings) {
     editItemErrorClass = validationSettings.inputErrorClass
+    inputSelectorName = validationSettings.inputSelector;
+    submitButtonSelectorName = validationSettings.submitButtonSelector;
     const editFormList = document.querySelectorAll(validationSettings.formSelector);
     editFormList.forEach((editForm) => {
-        const inputList = Array.from(editForm.querySelectorAll(validationSettings.inputSelector));
-        const buttonElement = editForm.querySelector(validationSettings.submitButtonSelector);
+        const inputList = Array.from(editForm.querySelectorAll(inputSelectorName));
+        const buttonElement = editForm.querySelector(submitButtonSelectorName);
 
         toggleButtonState(inputList, buttonElement);
         inputList.forEach((inputElement) => {
@@ -37,6 +26,18 @@ function enableValidation(validationSettings) {
             });
         });
     });
+}
+
+function prepareFormValidation(form) {
+    const inputList = Array.from(form.querySelectorAll(inputSelectorName));
+    const buttonElement = form.querySelector(submitButtonSelectorName);
+
+    toggleButtonState(inputList, buttonElement);
+
+    inputList.forEach((inputElement) => {
+        hideInputError(form, inputElement)
+        });
+
 }
 
 function validateFormInput(form, input) {

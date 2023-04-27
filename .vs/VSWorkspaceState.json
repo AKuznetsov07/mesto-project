@@ -2,8 +2,10 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\components",
-    "\\src\\pages"
+    "\\src\\blocks",
+    "\\src\\blocks\\edit-item-error",
+    "\\src\\components"
   ],
+  "SelectedNode": "\\src\\components\\validate.js",
   "PreviewInSolutionExplorer": false
 }

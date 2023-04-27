@@ -1,5 +1,5 @@
 import '../pages/index.css';
-import { cardsCollectionPresenter as cardsPresenter } from './card.js';
+import { cardsCollectionPresenter as cardsPresenter } from './cardsCollection.js';
 import { popupsStateManager as popupManager } from './modal.js';
 import { formValidator as validator } from './validate.js';
 
@@ -7,24 +7,28 @@ const profile = document.querySelector('.profile');
 const profileFio = profile.querySelector('.profile__fio');
 const profileProfession = profile.querySelector('.profile__profession');
 
-const editCardPopup = document.querySelector('.popup_type_edit-card');
-const editBioPopup = document.querySelector('.popup_type_edit-bio');
-const viewCardPopup = document.querySelector('.popup_type_view-card');
+const popupEditCard = document.querySelector('.popup_type_edit-card');
+const popupEditBio = document.querySelector('.popup_type_edit-bio');
+const popupViewCard = document.querySelector('.popup_type_view-card');
+const popupViewCardImage = popupViewCard.querySelector('.view-form__image');
+const popupViewCardCaption = popupViewCard.querySelector('.view-form__caption');
 
-const editCardForm = editCardPopup.querySelector('.edit-form');
-const editBioForm = editBioPopup.querySelector('.edit-form');
+const formEditCard = popupEditCard.querySelector('.edit-form');
+const formEditBio = popupEditBio.querySelector('.edit-form');
+
+
 
 const placesList = document.querySelector('.elements');
 
-initialize();
+initializePage();
 
 
 
 /// <summary>
 /// Инициализирует страницу.
 /// </summary>
-function initialize() {
-    cardsPresenter.initializeWithDefaultModel(placesList, '#placeCardTemplate')
+function initializePage() {
+    cardsPresenter.initializeWithDefaultModel(placesList, '#placeCardTemplate', (uri, title, alt) => showCardViewPopup(uri, title, alt))
     initializeCommands();
     initializeFormsValidation();
 
@@ -40,16 +44,14 @@ function initializeCommands() {
     if (cardsPresenter)
         placesList.addEventListener(cardsPresenter.imageClickedEventName, onImageListClick)
 
-    editBioForm.addEventListener('submit', (eventArgs) => submitEditProfile(eventArgs, editBioPopup));
-    editCardForm.addEventListener('submit', (eventArgs) => submitEditCard(eventArgs, editCardPopup));
+    formEditBio.addEventListener('submit', (eventArgs) => submitEditProfile(eventArgs, popupEditBio));
+    formEditCard.addEventListener('submit', (eventArgs) => submitEditCard(eventArgs, popupEditCard));
 
     if (popupManager) {
-        popupManager.handlePopup(editCardPopup);
-        popupManager.handlePopup(editBioPopup);
-        popupManager.handlePopup(viewCardPopup);
+        popupManager.handlePopup(popupEditCard);
+        popupManager.handlePopup(popupEditBio);
+        popupManager.handlePopup(popupViewCard);
     }
-
-    document.addEventListener('keydown', (eventArgs) => onKeyDown(eventArgs));
 }
 
 /// <summary>
@@ -67,20 +69,31 @@ function initializeFormsValidation() {
     }
 }
 
+function showCardViewPopup(uri, title, alt) {
+
+    popupViewCardImage.src = uri;
+    popupViewCardImage.alt = alt;
+    popupViewCardCaption.textContent = title;
+
+    popupManager.showPopup(popupViewCard);
+}
+
 /// <summary>
 /// Подготавливает окно редактирования к редактиованию карточки.
 /// </summary>
 function prepareFormToEditCard() {
-            editCardForm.reset();
-        }
+    formEditCard.reset();
+    validator.prepareFormValidation(formEditCard);
+}
 
 
 /// <summary>
 /// Подготавливает окно редактирования к редактиованию профиля.
 /// </summary>
 function prepareFormToEditProfile() {
-    editBioForm.Fio.value = profileFio.textContent;
-    editBioForm.Profession.value = profileProfession.textContent;
+    formEditBio.Fio.value = profileFio.textContent;
+    formEditBio.Profession.value = profileProfession.textContent;
+    validator.prepareFormValidation(formEditBio);
 
 }
 
@@ -91,7 +104,7 @@ function prepareFormToEditProfile() {
 /// <param name="eventArgs">Аргументы события.</param>
 function handleAddButtonClick(eventArgs) {
     prepareFormToEditCard();
-    popupManager.showPopup(editCardPopup);
+    popupManager.showPopup(popupEditCard);
 }
 
 /// <summary>
@@ -100,17 +113,7 @@ function handleAddButtonClick(eventArgs) {
 /// <param name="eventArgs">Аргументы события.</param>
 function handleEditButtonClick(eventArgs) {
     prepareFormToEditProfile();
-    popupManager.showPopup(editBioPopup);
-}
-
-/// <summary>
-/// Обработчик события нажатия клавиши клавиатуры.
-/// </summary>
-/// <param name="eventArgs">Аргументы события.</param>
-/// <param name="sender">Источник события.</param>
-function onKeyDown(eventArgs, sender) {
-    if (eventArgs.key === 'Escape')
-        popupManager.closeActivePopup();
+    popupManager.showPopup(popupEditBio);
 }
 
 /// <summary>
@@ -118,10 +121,10 @@ function onKeyDown(eventArgs, sender) {
 /// </summary>
 /// <param name="eventArgs">Аргументы события.</param>
 function onImageListClick(eventArgs) {
-    viewCardPopup.querySelector('.view-form__image').src = eventArgs.detail.uri;
-    viewCardPopup.querySelector('.view-form__image').alt = eventArgs.detail.title;
-    viewCardPopup.querySelector('.view-form__caption').textContent = eventArgs.detail.title;
-    popupManager.showPopup(viewCardPopup);
+    popupViewCardImage.src = eventArgs.detail.uri;
+    popupViewCardImage.alt = eventArgs.detail.title;
+    popupViewCardCaption.textContent = eventArgs.detail.title;
+    popupManager.showPopup(popupViewCard);
 }
 
 /// <summary>
@@ -130,11 +133,11 @@ function onImageListClick(eventArgs) {
 /// <param name="eventArgs">Аргументы события.</param>
 /// <param name="sender">Источник события.</param>
 function submitEditProfile(eventArgs, sender) {
-            eventArgs.preventDefault();
-            profileFio.textContent = editBioForm.Fio.value;
-            profileProfession.textContent = editBioForm.Profession.value;
-            popupManager.closeActivePopup();
-        }
+    eventArgs.preventDefault();
+    profileFio.textContent = formEditBio.Fio.value;
+    profileProfession.textContent = formEditBio.Profession.value;
+    popupManager.closeActivePopup();
+}
 
 /// <summary>
 /// Обработчик события нажатия кнопки принятия изменений в окне редактирования карточки.
@@ -143,6 +146,6 @@ function submitEditProfile(eventArgs, sender) {
 /// <param name="sender">Источник события.</param>
 function submitEditCard(eventArgs, sender) {
     eventArgs.preventDefault();
-    cardsPresenter.add(editCardForm.CardName.value, editCardForm.ImgLink.value);
+    cardsPresenter.add(formEditCard.CardName.value, formEditCard.ImgLink.value);
     popupManager.closeActivePopup(sender);
 }

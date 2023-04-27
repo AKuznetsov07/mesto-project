@@ -22,15 +22,28 @@ function showPopup(popup) {
     if (activePopup) {
         closeDialog(activePopup);
     }
+
+    document.addEventListener('keydown', onKeyDown);
     popup.classList.add('popup_opened');
     activePopup = popup;
+}
+
+/// <summary>
+/// Очень уместный в модуле логики попапов обработчик события страницы, по нажатию клавиши на странице.
+/// </summary>
+/// <param name="eventArgs">Аргументы события.</param>
+/// <param name="sender">Источник события.</param>
+function onKeyDown(eventArgs) {
+    if (eventArgs.key === 'Escape')
+        closePopup(activePopup);
 }
 
 /// <summary>
 /// Закрывает попап.
 /// </summary>
 function closePopup(popup) {
-    popup.classList.remove('popup_opened');
+    document.removeEventListener('keydown', onKeyDown, false);
+    activePopup.classList.remove('popup_opened');
     activePopup = null;
 }
 
