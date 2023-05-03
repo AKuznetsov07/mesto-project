@@ -2,19 +2,28 @@ import '../pages/index.css';
 import { cardsCollectionPresenter as cardsPresenter } from './cardsCollection.js';
 import { popupsStateManager as popupManager } from './modal.js';
 import { formValidator as validator } from './validate.js';
+import { webService as api } from './api.js';
 
+let profileModel = null;
 const profile = document.querySelector('.profile');
 const profileFio = profile.querySelector('.profile__fio');
 const profileProfession = profile.querySelector('.profile__profession');
+const profileImg = document.querySelector('.profile__avatar');
 
 const popupEditCard = document.querySelector('.popup_type_edit-card');
 const popupEditBio = document.querySelector('.popup_type_edit-bio');
+const popupEditAvatar = document.querySelector('.popup_type_edit-avatar');
 const popupViewCard = document.querySelector('.popup_type_view-card');
 const popupViewCardImage = popupViewCard.querySelector('.view-form__image');
 const popupViewCardCaption = popupViewCard.querySelector('.view-form__caption');
 
 const formEditCard = popupEditCard.querySelector('.edit-form');
 const formEditBio = popupEditBio.querySelector('.edit-form');
+const formEditAvatar = popupEditAvatar.querySelector('.edit-form');
+
+const buttonSubmitBioEdit = formEditBio.querySelector('.edit-form__button_action_submit');
+const buttonSubmitCardEdit = formEditCard.querySelector('.edit-form__button_action_submit');
+const buttonSubmitAvatarEdit = formEditAvatar.querySelector('.edit-form__button_action_submit');
 
 
 
@@ -28,10 +37,23 @@ initializePage();
 /// Инициализирует страницу.
 /// </summary>
 function initializePage() {
-    cardsPresenter.initializeWithDefaultModel(placesList, '#placeCardTemplate', (uri, title, alt) => showCardViewPopup(uri, title, alt))
+    initializeData();
     initializeCommands();
     initializeFormsValidation();
 
+}
+function initializeData() {
+    api.getUserInfo().then(result => profileModel = result)
+        .then(renderProfileInfo)
+        .then(res => {
+            cardsPresenter.initialize(placesList, '#placeCardTemplate', (uri, title) => showCardViewPopup(uri, title), profileModel._id)
+        }).then(res => console.log(profileModel));
+}
+
+function renderProfileInfo() {
+    profileFio.textContent = profileModel.name;
+    profileProfession.textContent = profileModel.about;
+    profileImg.src = profileModel.avatar;
 }
 
 /// <summary>
@@ -40,16 +62,17 @@ function initializePage() {
 function initializeCommands() {
     document.querySelector('.profile__add-button').addEventListener('click', (eventArgs) => handleAddButtonClick(eventArgs));
     document.querySelector('.profile__edit-button').addEventListener('click', (eventArgs) => handleEditButtonClick(eventArgs));
-
+    profileImg.addEventListener('click', (eventArgs) => handleAvatarClick(eventArgs));
     if (cardsPresenter)
         placesList.addEventListener(cardsPresenter.imageClickedEventName, onImageListClick)
 
     formEditBio.addEventListener('submit', (eventArgs) => submitEditProfile(eventArgs, popupEditBio));
     formEditCard.addEventListener('submit', (eventArgs) => submitEditCard(eventArgs, popupEditCard));
-
+    formEditAvatar.addEventListener('submit', (eventArgs) => submitEditAvatar(eventArgs, popupEditAvatar));
     if (popupManager) {
         popupManager.handlePopup(popupEditCard);
         popupManager.handlePopup(popupEditBio);
+        popupManager.handlePopup(popupEditAvatar);
         popupManager.handlePopup(popupViewCard);
     }
 }
@@ -69,10 +92,10 @@ function initializeFormsValidation() {
     }
 }
 
-function showCardViewPopup(uri, title, alt) {
+function showCardViewPopup(uri, title) {
 
     popupViewCardImage.src = uri;
-    popupViewCardImage.alt = alt;
+    popupViewCardImage.alt = title;
     popupViewCardCaption.textContent = title;
 
     popupManager.showPopup(popupViewCard);
@@ -82,6 +105,7 @@ function showCardViewPopup(uri, title, alt) {
 /// Подготавливает окно редактирования к редактиованию карточки.
 /// </summary>
 function prepareFormToEditCard() {
+    buttonSubmitCardEdit.textContent = 'Создать';
     formEditCard.reset();
     validator.prepareFormValidation(formEditCard);
 }
@@ -91,12 +115,21 @@ function prepareFormToEditCard() {
 /// Подготавливает окно редактирования к редактиованию профиля.
 /// </summary>
 function prepareFormToEditProfile() {
+    buttonSubmitBioEdit.textContent = 'Сохранить';
     formEditBio.Fio.value = profileFio.textContent;
     formEditBio.Profession.value = profileProfession.textContent;
     validator.prepareFormValidation(formEditBio);
 
 }
 
+function prepareFormToEditAvatar() {
+    buttonSubmitAvatarEdit.textContent = 'Сохранить';
+    formEditAvatar.ImgLink.value = profileModel.avatar;
+    console.log('prepareFormToEditAvatar');
+    console.log(formEditAvatar.ImgLink.value);
+    validator.prepareFormValidation(popupEditAvatar);
+
+}
 
 /// <summary>
 /// Обработчик события нажатия кнопки добавления карточки.
@@ -114,6 +147,11 @@ function handleAddButtonClick(eventArgs) {
 function handleEditButtonClick(eventArgs) {
     prepareFormToEditProfile();
     popupManager.showPopup(popupEditBio);
+}
+
+function handleAvatarClick(eventArgs) {
+    prepareFormToEditAvatar();
+    popupManager.showPopup(popupEditAvatar);
 }
 
 /// <summary>
@@ -134,9 +172,11 @@ function onImageListClick(eventArgs) {
 /// <param name="sender">Источник события.</param>
 function submitEditProfile(eventArgs, sender) {
     eventArgs.preventDefault();
-    profileFio.textContent = formEditBio.Fio.value;
-    profileProfession.textContent = formEditBio.Profession.value;
+    buttonSubmitBioEdit.textContent = 'Сохранение...';
+    profileModel.name = formEditBio.Fio.value;
+    profileModel.about = formEditBio.Profession.value;
     popupManager.closeActivePopup();
+    api.updateUserInfo(profileModel).then(renderProfileInfo);
 }
 
 /// <summary>
@@ -146,6 +186,17 @@ function submitEditProfile(eventArgs, sender) {
 /// <param name="sender">Источник события.</param>
 function submitEditCard(eventArgs, sender) {
     eventArgs.preventDefault();
-    cardsPresenter.add(formEditCard.CardName.value, formEditCard.ImgLink.value);
-    popupManager.closeActivePopup(sender);
+    buttonSubmitCardEdit.textContent = 'Сохранение...';
+    let cardData = null;
+    api.createCard(formEditCard.CardName.value, formEditCard.ImgLink.value).then(res => cardsPresenter.add(res)).then(popupManager.closeActivePopup(sender));
+}
+
+function submitEditAvatar(eventArgs, sender) {
+    eventArgs.preventDefault();
+    buttonSubmitAvatarEdit.textContent = 'Сохранение...';
+    const link = formEditAvatar.ImgLink.value;
+    api.updateAvatarLink(link).then(res => {
+        profileModel.avatar = link
+        renderProfileInfo();
+    }).then(res => popupManager.closeActivePopup(sender))
 }

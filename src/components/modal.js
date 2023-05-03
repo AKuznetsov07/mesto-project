@@ -43,7 +43,7 @@ function onKeyDown(eventArgs) {
 /// </summary>
 function closePopup(popup) {
     document.removeEventListener('keydown', onKeyDown, false);
-    activePopup.classList.remove('popup_opened');
+    popup.classList.remove('popup_opened');
     activePopup = null;
 }
 
@@ -62,7 +62,7 @@ function handleCloseButtonClick(eventArgs, sender) {
 /// <param name="eventArgs">Аргументы события.</param>
 /// <param name="sender">Источник события.</param>
 function onPopupMouseDown(eventArgs, sender) {
-            if (eventArgs.target.classList.contains('popup'))
-                closePopup(sender);
-        }
+    if (eventArgs.target.classList.contains('popup'))
+        closePopup(sender);
+}
 

@@ -3,9 +3,11 @@
     "",
     "\\src",
     "\\src\\blocks",
-    "\\src\\blocks\\edit-item-error",
-    "\\src\\components"
+    "\\src\\blocks\\elements",
+    "\\src\\blocks\\elements\\__like-block",
+    "\\src\\blocks\\elements\\__like-button",
+    "\\src\\blocks\\elements\\__like-count",
+    "\\src\\pages"
   ],
-  "SelectedNode": "\\src\\components\\validate.js",
   "PreviewInSolutionExplorer": false
 }

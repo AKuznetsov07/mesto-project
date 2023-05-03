@@ -1,6 +1,6 @@
 .elements__like-button {
     padding: 0;
-    margin: 30px 20px;
+    margin: 22px 20px 3px;
     grid-area: like-button;
     width: 22px;
     height: 19px;
