@@ -9,6 +9,8 @@ const profile = document.querySelector('.profile');
 const profileFio = profile.querySelector('.profile__fio');
 const profileProfession = profile.querySelector('.profile__profession');
 const profileImg = document.querySelector('.profile__avatar');
+const profileImgHover = document.querySelector('.profile__avatar-hover');
+
 
 const popupEditCard = document.querySelector('.popup_type_edit-card');
 const popupEditBio = document.querySelector('.popup_type_edit-bio');
@@ -47,7 +49,7 @@ function initializeData() {
         .then(renderProfileInfo)
         .then(res => {
             cardsPresenter.initialize(placesList, '#placeCardTemplate', (uri, title) => showCardViewPopup(uri, title), profileModel._id)
-        }).then(res => console.log(profileModel));
+        });
 }
 
 function renderProfileInfo() {
@@ -62,7 +64,7 @@ function renderProfileInfo() {
 function initializeCommands() {
     document.querySelector('.profile__add-button').addEventListener('click', (eventArgs) => handleAddButtonClick(eventArgs));
     document.querySelector('.profile__edit-button').addEventListener('click', (eventArgs) => handleEditButtonClick(eventArgs));
-    profileImg.addEventListener('click', (eventArgs) => handleAvatarClick(eventArgs));
+    profileImgHover.addEventListener('click', (eventArgs) => handleAvatarClick(eventArgs));
     if (cardsPresenter)
         placesList.addEventListener(cardsPresenter.imageClickedEventName, onImageListClick)
 
@@ -125,8 +127,6 @@ function prepareFormToEditProfile() {
 function prepareFormToEditAvatar() {
     buttonSubmitAvatarEdit.textContent = 'Сохранить';
     formEditAvatar.ImgLink.value = profileModel.avatar;
-    console.log('prepareFormToEditAvatar');
-    console.log(formEditAvatar.ImgLink.value);
     validator.prepareFormValidation(popupEditAvatar);
 
 }

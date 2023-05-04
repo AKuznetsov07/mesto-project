@@ -12,7 +12,10 @@
 
     <main class="main">
         <section class="profile">
-            <img class="profile__avatar" alt="Аватар профиля" />
+            <div class="profile__avatar-container">
+                <img class="profile__avatar" alt="Аватар профиля" />
+                <img class="profile__avatar-hover" src="<%=require('./images/editAvatar.svg')%>" alt="" />
+            </div>
             <h1 class="profile__fio"></h1>
             <button type="button" class="profile__edit-button interactive-item"></button>
             <p class="profile__profession"></p>

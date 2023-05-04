@@ -3,11 +3,14 @@
     "",
     "\\src",
     "\\src\\blocks",
-    "\\src\\blocks\\elements",
     "\\src\\blocks\\elements\\__like-block",
     "\\src\\blocks\\elements\\__like-button",
     "\\src\\blocks\\elements\\__like-count",
+    "\\src\\blocks\\popup\\_type",
+    "\\src\\blocks\\profile",
+    "\\src\\components",
     "\\src\\pages"
   ],
+  "SelectedNode": "\\src\\components\\modal.js",
   "PreviewInSolutionExplorer": false
 }

@@ -51,9 +51,6 @@ function handleLikeButtonClick(evt, cardData, likeButton, likeCounter) {
             })
             .then(res => configureLikesView(cardData, likeButton, likeCounter))
     }
-    //console.log()
-    //configureLikesView(cardData, likeButton, likeCounter)
-    //eventArgs.target.classList.toggle('elements__like-button_selected');
     configureLikesView(cardData, likeButton, likeCounter);
 }
 function configureLikesView(cardData, likeButton, likeCounter) {

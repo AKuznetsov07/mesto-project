@@ -1,0 +1,23 @@
+.profile__avatar-hover {
+    margin: 0 30px 0 0;
+    padding: 0;
+    border-radius: 50%;
+    object-fit: none;
+    width: 120px;
+    height: 120px;
+    grid-column: 1;
+    grid-row: 1;
+    z-index:2;
+    background-color:rgba(1, 0, 0, 0);
+    opacity:0;
+}
+@media screen and (max-width: 767px) {
+    .profile__avatar-hover {
+        justify-self: center;
+        margin: 0 0 26px;
+    }
+}
+.profile__avatar-hover:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+    opacity: 1;
+}

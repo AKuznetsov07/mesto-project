@@ -44,7 +44,6 @@ function hostPlaceCard(cardData) {
 
         const canBeDeleted = cardData.owner._id == userId;
         
-        //console.log(cardData);
         const createdCard = createCardNode(cardData, canBeDeleted);
         const card = {
             model: cardData,
@@ -62,11 +61,10 @@ function createCardNode(cardData, canBeDeleted) {
     const imgUri = cardData.link;
     let removeFunc = null;
     if (canBeDeleted) {
-        removeFunc = () => handleRemoveButtonClick(cardData._id)/*console.log(`delete: ${cardData._id}`)*/;
+        removeFunc = () => handleRemoveButtonClick(cardData._id);
     }
     card.initializeCard(placeNode, cardData, removeFunc, () => showPopupViewCard(imgUri, placeTitle), userId);
 
-//    card.initializeCard(placeNode, imgUri, placeTitle, imgAlt, () => removeCard(placeNode), () => showPopupViewCard(imgUri, placeTitle, imgAlt))
     return placeNode;
 }
 
@@ -75,8 +73,6 @@ function removeCard() {
     const card = viewModel.get(removeId);
     api.deleteCard(removeId).then(res => card.view.remove()).then(res => viewModel.delete(removeId))
         .finally(popupManager.closeActivePopup);
-    //card.view.remove();
-    //console.log(`delete: ${cardId}`)
 }
 
 
@@ -86,12 +82,8 @@ function removeCard() {
 /// <param name="eventArgs">Аргументы события.</param>
 /// <param name="sender">Источник события.</param>
 function handleRemoveButtonClick(cardId) {
-    console.log('handleRemoveButtonClick');
-    //formConfirmCardDelete.removeEventListener('submit', handleRemoveSubmit,)
     removeId = cardId
-    /*formConfirmCardDelete.addEventListener('submit', (evt) => handleRemoveSubmit(evt) );*/
     popupManager.showPopup(popupConfirmCardDelete);
-    //removeCard(sender);
 }
 function handleRemoveSubmit(eventArgs) {
     eventArgs.preventDefault();
