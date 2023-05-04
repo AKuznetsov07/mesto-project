@@ -3,14 +3,13 @@
     "",
     "\\src",
     "\\src\\blocks",
-    "\\src\\blocks\\elements\\__like-block",
-    "\\src\\blocks\\elements\\__like-button",
-    "\\src\\blocks\\elements\\__like-count",
-    "\\src\\blocks\\popup\\_type",
-    "\\src\\blocks\\profile",
+    "\\src\\blocks\\profile\\__avatar",
+    "\\src\\blocks\\profile\\__avatar-container",
+    "\\src\\blocks\\profile\\__avatar-hover",
     "\\src\\components",
+    "\\src\\images",
     "\\src\\pages"
   ],
-  "SelectedNode": "\\src\\components\\modal.js",
+  "SelectedNode": "\\src\\components\\api.js",
   "PreviewInSolutionExplorer": false
 }

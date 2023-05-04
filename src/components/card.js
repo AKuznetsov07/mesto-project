@@ -1,13 +1,11 @@
 import { webService as api } from './api.js';
 
 let userId = null;
-//let cardModel = null;
 export const cardPresenter = {
     initializeCard: (card, cardData, removeCardFunc, viewCardFunc, id) => initializeCard(card, cardData, removeCardFunc, viewCardFunc, id)
 }
 
 function initializeCard(card, cardData, removeCardFunc, viewCardFunc, id) {
-    //cardModel = cardData;
     userId = id;
 
     const likeButton = card.querySelector('.elements__like-button');
@@ -43,6 +41,8 @@ function handleLikeButtonClick(evt, cardData, likeButton, likeCounter) {
                 cardData.likes = res.likes
             })
             .then(res => configureLikesView(cardData, likeButton, likeCounter))
+            .then(configureLikesView(cardData, likeButton, likeCounter))
+            .catch(err => console.log(`Îøèáêà: ${err}`));
     }
     else {
         api.likeCard(cardData._id)
@@ -50,8 +50,9 @@ function handleLikeButtonClick(evt, cardData, likeButton, likeCounter) {
                 cardData.likes = res.likes
             })
             .then(res => configureLikesView(cardData, likeButton, likeCounter))
+            .then(res => configureLikesView(cardData, likeButton, likeCounter))
+            .catch(err => console.log(`Îøèáêà: ${err}`));
     }
-    configureLikesView(cardData, likeButton, likeCounter);
 }
 function configureLikesView(cardData, likeButton, likeCounter) {
     const isLiked = cardData.likes.some((profile) => {

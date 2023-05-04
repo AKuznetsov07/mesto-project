@@ -16,14 +16,15 @@ let userId = null;
 
 
 export const cardsCollectionPresenter = {
-    initialize: (view, template, cardViewPopup, id) => initializeCardsCollection(view, template, cardViewPopup, id),
-    add: (cardData) => hostPlaceCard(cardData),
+    initialize: (view, template, cardViewPopup, id, cards) => initializeCardsCollection(view, template, cardViewPopup, id, cards),
+    add: (cardData) => prependPlaceCard(cardData),
     remove: (cardId) => handleRemoveButtonClick(cardId),
     imageClickedEventName: "imageClicked"
 }
 
 
-function initializeCardsCollection(view, template, showCardViewPopupFunc,id) {
+function initializeCardsCollection(view, template, showCardViewPopupFunc, id, cards) {
+    console.log('initializeCardsCollection')
     cardsView = view;
     cardTemplate = template;
     showPopupViewCard = showCardViewPopupFunc;
@@ -31,16 +32,14 @@ function initializeCardsCollection(view, template, showCardViewPopupFunc,id) {
     if (popupConfirmCardDelete) {
         popupManager.handlePopup(popupConfirmCardDelete);
     }
+    cards.forEach(record => prependPlaceCard(record));
+    //loadData();
     formConfirmCardDelete.addEventListener('submit', (evt) => handleRemoveSubmit(evt));
-    loadData();
 }
 
-function loadData() {
-    api.getCards().then(data => data.forEach(record => hostPlaceCard(record)));
-}
-
-function hostPlaceCard(cardData) {
+function prependPlaceCard(cardData) {
     if (cardData && !viewModel.has(cardData._id)) {
+        console.log(cardData)
 
         const canBeDeleted = cardData.owner._id == userId;
         
@@ -72,7 +71,8 @@ function createCardNode(cardData, canBeDeleted) {
 function removeCard() {
     const card = viewModel.get(removeId);
     api.deleteCard(removeId).then(res => card.view.remove()).then(res => viewModel.delete(removeId))
-        .finally(popupManager.closeActivePopup);
+        .then(popupManager.closeActivePopup)
+        .catch(err => console.log(`Ошибка: ${err}`));
 }
 
 

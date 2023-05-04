@@ -23,7 +23,7 @@ function showPopup(popup) {
         closeDialog(activePopup);
     }
 
-    document.addEventListener('keydown', onKeyDown);
+    document.addEventListener('keydown', handleKeyDown);
     popup.classList.add('popup_opened');
     activePopup = popup;
 }
@@ -33,7 +33,7 @@ function showPopup(popup) {
 /// </summary>
 /// <param name="eventArgs">Аргументы события.</param>
 /// <param name="sender">Источник события.</param>
-function onKeyDown(eventArgs) {
+function handleKeyDown(eventArgs) {
     if (eventArgs.key === 'Escape')
         closePopup(activePopup);
 }
@@ -42,7 +42,7 @@ function onKeyDown(eventArgs) {
 /// Закрывает попап.
 /// </summary>
 function closePopup(popup) {
-    document.removeEventListener('keydown', onKeyDown, false);
+    document.removeEventListener('keydown', handleKeyDown, false);
     popup.classList.remove('popup_opened');
     activePopup = null;
 }

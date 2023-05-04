@@ -44,12 +44,22 @@ function initializePage() {
     initializeFormsValidation();
 
 }
+
 function initializeData() {
-    api.getUserInfo().then(result => profileModel = result)
-        .then(renderProfileInfo)
-        .then(res => {
-            cardsPresenter.initialize(placesList, '#placeCardTemplate', (uri, title) => showCardViewPopup(uri, title), profileModel._id)
-        });
+    console.log('initializeData')
+    const getUserInfo = api.getUserInfo();
+    const getCards = api.getCards();
+
+    console.log(getUserInfo)
+    console.log(getCards)
+    Promise.all([getUserInfo, getCards])
+        .then(([userData, cards]) => {
+            console.log(userData)
+            console.log(cards)
+            profileModel = userData;
+            cardsPresenter.initialize(placesList, '#placeCardTemplate', (uri, title) => showCardViewPopup(uri, title), profileModel._id, cards)
+        })
+        .catch(err => { err => console.log(`Ошибка: ${err}`) });
 }
 
 function renderProfileInfo() {
@@ -66,7 +76,7 @@ function initializeCommands() {
     document.querySelector('.profile__edit-button').addEventListener('click', (eventArgs) => handleEditButtonClick(eventArgs));
     profileImgHover.addEventListener('click', (eventArgs) => handleAvatarClick(eventArgs));
     if (cardsPresenter)
-        placesList.addEventListener(cardsPresenter.imageClickedEventName, onImageListClick)
+        placesList.addEventListener(cardsPresenter.imageClickedEventName, handleImageListClick)
 
     formEditBio.addEventListener('submit', (eventArgs) => submitEditProfile(eventArgs, popupEditBio));
     formEditCard.addEventListener('submit', (eventArgs) => submitEditCard(eventArgs, popupEditCard));
@@ -107,7 +117,6 @@ function showCardViewPopup(uri, title) {
 /// Подготавливает окно редактирования к редактиованию карточки.
 /// </summary>
 function prepareFormToEditCard() {
-    buttonSubmitCardEdit.textContent = 'Создать';
     formEditCard.reset();
     validator.prepareFormValidation(formEditCard);
 }
@@ -117,7 +126,6 @@ function prepareFormToEditCard() {
 /// Подготавливает окно редактирования к редактиованию профиля.
 /// </summary>
 function prepareFormToEditProfile() {
-    buttonSubmitBioEdit.textContent = 'Сохранить';
     formEditBio.Fio.value = profileFio.textContent;
     formEditBio.Profession.value = profileProfession.textContent;
     validator.prepareFormValidation(formEditBio);
@@ -125,7 +133,6 @@ function prepareFormToEditProfile() {
 }
 
 function prepareFormToEditAvatar() {
-    buttonSubmitAvatarEdit.textContent = 'Сохранить';
     formEditAvatar.ImgLink.value = profileModel.avatar;
     validator.prepareFormValidation(popupEditAvatar);
 
@@ -158,7 +165,7 @@ function handleAvatarClick(eventArgs) {
 /// Обработчик события нажатия на изображение карточки.
 /// </summary>
 /// <param name="eventArgs">Аргументы события.</param>
-function onImageListClick(eventArgs) {
+function handleImageListClick(eventArgs) {
     popupViewCardImage.src = eventArgs.detail.uri;
     popupViewCardImage.alt = eventArgs.detail.title;
     popupViewCardCaption.textContent = eventArgs.detail.title;
@@ -175,8 +182,13 @@ function submitEditProfile(eventArgs, sender) {
     buttonSubmitBioEdit.textContent = 'Сохранение...';
     profileModel.name = formEditBio.Fio.value;
     profileModel.about = formEditBio.Profession.value;
-    popupManager.closeActivePopup();
-    api.updateUserInfo(profileModel).then(renderProfileInfo);
+    api.updateUserInfo(profileModel)
+        .catch(err => console.log(`Ошибка: ${err}`))
+        .finally(res => {
+            buttonSubmitBioEdit.textContent = 'Сохранить';
+            renderProfileInfo();
+            popupManager.closeActivePopup();
+        });
 }
 
 /// <summary>
@@ -188,7 +200,12 @@ function submitEditCard(eventArgs, sender) {
     eventArgs.preventDefault();
     buttonSubmitCardEdit.textContent = 'Сохранение...';
     let cardData = null;
-    api.createCard(formEditCard.CardName.value, formEditCard.ImgLink.value).then(res => cardsPresenter.add(res)).then(popupManager.closeActivePopup(sender));
+    api.createCard(formEditCard.CardName.value, formEditCard.ImgLink.value).then(res => cardsPresenter.add(res))
+        .catch(err => console.log(`Ошибка: ${err}`))
+        .finally(res => {
+            buttonSubmitCardEdit.textContent = 'Создать';
+            popupManager.closeActivePopup(sender)
+        });
 }
 
 function submitEditAvatar(eventArgs, sender) {
@@ -198,5 +215,10 @@ function submitEditAvatar(eventArgs, sender) {
     api.updateAvatarLink(link).then(res => {
         profileModel.avatar = link
         renderProfileInfo();
-    }).then(res => popupManager.closeActivePopup(sender))
+    })
+        .catch(err => console.log(`Ошибка: ${err}`))
+        .finally(res => {
+            buttonSubmitAvatarEdit.textContent = 'Сохранить';
+            popupManager.closeActivePopup(sender)
+        })
 }

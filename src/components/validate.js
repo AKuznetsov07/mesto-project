@@ -21,7 +21,7 @@ function enableValidation(validationSettings) {
         toggleButtonState(inputList, buttonElement);
         inputList.forEach((inputElement) => {
             inputElement.addEventListener('input', (eventArgs) => {
-                onFormInput(editForm, inputElement, eventArgs)
+                handleFormInput(editForm, inputElement, eventArgs)
                 toggleButtonState(inputList, buttonElement)
             });
         });
@@ -79,7 +79,7 @@ const hideInputError = (form, input) => {
     errorElement.textContent = '';
 };
 
-function onFormInput(form, input, eventArgs) {
+function handleFormInput(form, input, eventArgs) {
     const isFormValid = validateFormInput(form, input);
 }
 
