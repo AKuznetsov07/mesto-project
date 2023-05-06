@@ -67,7 +67,8 @@ function createCardNode(cardData, canBeDeleted) {
 
 function removeCard() {
     const card = viewModel.get(removeId);
-    api.deleteCard(removeId).then(res => card.view.remove()).then(res => viewModel.delete(removeId))
+    api.deleteCard(removeId).then(res => card.view.remove())
+        .then(res => viewModel.delete(removeId))
         .then(popupManager.closeActivePopup)
         .catch(err => console.log(`Ошибка: ${err}`));
 }

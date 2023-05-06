@@ -55,7 +55,7 @@ function initializeData() {
             renderProfileInfo()
             cardsPresenter.initialize(placesList, '#placeCardTemplate', (uri, title) => showCardViewPopup(uri, title), profileModel._id, cards)
         })
-        .catch(err => { err => console.log(`Ошибка: ${err}`) });
+        .catch(err => console.log(`Ошибка: ${err}`));
 }
 
 function renderProfileInfo() {
