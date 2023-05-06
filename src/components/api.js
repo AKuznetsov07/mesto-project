@@ -1,6 +1,14 @@
 const authorizationToken = '870f9827-3765-496c-aae9-f242e8f8bcfb';
 const groupID = 'plus-cohort-23';
 const projectAdress = 'https://mesto.nomoreparties.co';
+const config = {
+    baseUrl: 'https://mesto.nomoreparties.co/v1/plus-cohort-23',
+    headers: {
+        authorization: '870f9827-3765-496c-aae9-f242e8f8bcfb',
+        'Content-Type': 'application/json',
+    }
+};
+
 
 export const webService = {
     getUserInfo: () => getUserInfo(),
@@ -15,12 +23,9 @@ export const webService = {
 
 function createCard(name,uri) {
 
-    return fetch(`${projectAdress}/v1/${groupID}/cards`, {
+    return fetch(`${config.baseUrl}/cards`, {
         method: 'POST',
-        headers: {
-            authorization: authorizationToken,
-            'Content-Type': 'application/json'
-        },
+        headers: config.headers,
         body: JSON.stringify({
             name: name,
             link: uri
@@ -30,21 +35,14 @@ function createCard(name,uri) {
 }
 
 function getUserInfo() {
-
-    console.log('getUserInfo')
-    return fetch(`${projectAdress}/v1/${groupID}/users/me`, {
-        headers: {
-            authorization: authorizationToken
-        }
+    return fetch(`${config.baseUrl}/users/me`, {
+        headers: config.headers
     }).then(checkResponse);
 }
 
 function getCards() {
-    console.log('getCards')
-    return fetch(`${projectAdress}/v1/${groupID}/cards`, {
-        headers: {
-            authorization: authorizationToken
-        }
+    return fetch(`${config.baseUrl}/cards`, {
+        headers: config.headers
     }).then(checkResponse);
 }
 
@@ -52,12 +50,9 @@ function getCard() {
 
 }
 function updateUserInfo(profileModel) {
-    return fetch(`${projectAdress}/v1/${groupID}/users/me`, {
+    return fetch(`${config.baseUrl}/users/me`, {
         method: 'PATCH',
-        headers: {
-            authorization: authorizationToken,
-            'Content-Type': 'application/json'
-        },
+        headers: config.headers,
         body: JSON.stringify({
             name: profileModel.name,
             about: profileModel.about
@@ -70,41 +65,29 @@ function updateCard() {
 
 function deleteCard(id) {
 
-    return fetch(`${projectAdress}/v1/${groupID}/cards/${id}`, {
+    return fetch(`${config.baseUrl}/cards/${id}`, {
         method: 'DELETE',
-        headers: {
-            authorization: authorizationToken,
-            'Content-Type': 'application/json'
-        }
+        headers: config.headers
     }).then(checkResponse);
 }
 
 function likeCard(id) {
-    return fetch(`${projectAdress}/v1/${groupID}/cards/likes/${id}`, {
+    return fetch(`${config.baseUrl}/cards/likes/${id}`, {
         method: 'PUT',
-        headers: {
-            authorization: authorizationToken,
-            'Content-Type': 'application/json'
-        }
+        headers: config.headers
     }).then(checkResponse);
 }
 function unlikeCard(id) {
-    return fetch(`${projectAdress}/v1/${groupID}/cards/likes/${id}`, {
+    return fetch(`${config.baseUrl}/cards/likes/${id}`, {
         method: 'DELETE',
-        headers: {
-            authorization: authorizationToken,
-            'Content-Type': 'application/json'
-        }
+        headers: config.headers
     }).then(checkResponse);
 }
 
 function updateAvatarLink(newUri) {
-    return fetch(`${projectAdress}/v1/${groupID}/users/me/avatar`, {
+    return fetch(`${config.baseUrl}/users/me/avatar`, {
         method: 'PATCH',
-        headers: {
-            authorization: authorizationToken,
-            'Content-Type': 'application/json'
-        },
+        headers: config.headers,
         body: JSON.stringify({
             avatar: newUri,
         })
@@ -117,3 +100,9 @@ function checkResponse(response) {
     }
     return Promise.reject(`Ошибка ${response.status}`);
 }
+
+///TODO:
+//function request(url, options) {
+//    // принимает два аргумента: урл и объект опций, как и `fetch`
+//    return fetch(url, options).then(checkResponse)
+//}

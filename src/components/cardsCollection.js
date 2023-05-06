@@ -24,7 +24,6 @@ export const cardsCollectionPresenter = {
 
 
 function initializeCardsCollection(view, template, showCardViewPopupFunc, id, cards) {
-    console.log('initializeCardsCollection')
     cardsView = view;
     cardTemplate = template;
     showPopupViewCard = showCardViewPopupFunc;
@@ -33,13 +32,11 @@ function initializeCardsCollection(view, template, showCardViewPopupFunc, id, ca
         popupManager.handlePopup(popupConfirmCardDelete);
     }
     cards.forEach(record => prependPlaceCard(record));
-    //loadData();
     formConfirmCardDelete.addEventListener('submit', (evt) => handleRemoveSubmit(evt));
 }
 
 function prependPlaceCard(cardData) {
     if (cardData && !viewModel.has(cardData._id)) {
-        console.log(cardData)
 
         const canBeDeleted = cardData.owner._id == userId;
         

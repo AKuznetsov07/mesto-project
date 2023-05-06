@@ -41,7 +41,6 @@ function handleLikeButtonClick(evt, cardData, likeButton, likeCounter) {
                 cardData.likes = res.likes
             })
             .then(res => configureLikesView(cardData, likeButton, likeCounter))
-            .then(configureLikesView(cardData, likeButton, likeCounter))
             .catch(err => console.log(`Ошибка: ${err}`));
     }
     else {
@@ -49,7 +48,6 @@ function handleLikeButtonClick(evt, cardData, likeButton, likeCounter) {
             .then(res => {
                 cardData.likes = res.likes
             })
-            .then(res => configureLikesView(cardData, likeButton, likeCounter))
             .then(res => configureLikesView(cardData, likeButton, likeCounter))
             .catch(err => console.log(`Ошибка: ${err}`));
     }

@@ -2,14 +2,8 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\blocks",
-    "\\src\\blocks\\profile\\__avatar",
-    "\\src\\blocks\\profile\\__avatar-container",
-    "\\src\\blocks\\profile\\__avatar-hover",
-    "\\src\\components",
-    "\\src\\images",
-    "\\src\\pages"
+    "\\src\\blocks"
   ],
-  "SelectedNode": "\\src\\components\\api.js",
+  "SelectedNode": "\\src\\index.html",
   "PreviewInSolutionExplorer": false
 }
